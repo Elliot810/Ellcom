@@ -110,15 +110,27 @@
       <button class="tab is-active" data-tab="atlas">Atlas AI</button>
       <button class="tab" data-tab="web">Webdesign</button>
       <button class="tab" data-tab="tpl">Templates</button>
-      <div class="avatar-wrap">
-        <button class="avatar" id="avatar" aria-label="Konto">?</button>
-        <div class="menu" id="menu">
-          <div class="menu-email" id="menu-email"></div>
-          <button class="nav-item"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
-          <button class="nav-item" id="logout"><i data-lucide="log-out" class="icon"></i>Ausloggen</button>
+      <div class="panel-actions" id="panel-actions">
+        <button class="panel-collapse" id="panel-close" title="Bereich einklappen" aria-label="Bereich einklappen"><i data-lucide="panel-right-close" class="icon"></i></button>
+        <div class="avatar-wrap" id="avatar-wrap">
+          <button class="avatar" id="avatar" aria-label="Konto">?</button>
+          <div class="menu" id="menu">
+            <div class="menu-email" id="menu-email"></div>
+            <button class="nav-item"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
+            <button class="nav-item" id="logout"><i data-lucide="log-out" class="icon"></i>Ausloggen</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Eingeklappte Leiste -->
+    <nav class="rail" id="rail" aria-label="Werkzeuge">
+      <button class="rail-btn rail-open" id="panel-open" title="Bereich ausklappen" aria-label="Bereich ausklappen"><i data-lucide="panel-right-open" class="icon"></i></button>
+      <button class="rail-btn" data-open="atlas"><i data-lucide="sparkles" class="icon"></i><span>Atlas AI</span></button>
+      <button class="rail-btn" data-open="web"><i data-lucide="globe" class="icon"></i><span>Webdesign</span></button>
+      <button class="rail-btn" data-open="tpl"><i data-lucide="layout-template" class="icon"></i><span>Templates</span></button>
+      <div class="rail-spacer" id="rail-spacer"></div>
+    </nav>
 
     <!-- Atlas AI (Nachbau des Layouts von Swiss AI Atlas) -->
     <div class="tab-body is-active atlas" id="tab-atlas">
@@ -265,13 +277,29 @@
   });
 
   /* ---------- Tabs ---------- */
+  function openTab(name) {
+    document.querySelectorAll('.tab').forEach(function (t) { t.classList.toggle('is-active', t.dataset.tab === name); });
+    document.querySelectorAll('.tab-body').forEach(function (b) { b.classList.toggle('is-active', b.id === 'tab-' + name); });
+  }
   document.querySelectorAll('.tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('is-active'); });
-      document.querySelectorAll('.tab-body').forEach(function (b) { b.classList.remove('is-active'); });
-      tab.classList.add('is-active');
-      document.getElementById('tab-' + tab.dataset.tab).classList.add('is-active');
-    });
+    tab.addEventListener('click', function () { openTab(tab.dataset.tab); });
+  });
+
+  /* ---------- Rechten Bereich ein-/ausklappen ---------- */
+  var appEl = document.querySelector('.app');
+  var avatarWrap = document.getElementById('avatar-wrap');
+  function setCollapsed(collapsed) {
+    appEl.classList.toggle('panel-collapsed', collapsed);
+    document.getElementById('menu').classList.remove('is-open');
+    if (collapsed) document.getElementById('rail').appendChild(avatarWrap);
+    else document.getElementById('panel-actions').appendChild(avatarWrap);
+    try { localStorage.setItem('lincomPanelCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+    setTimeout(function () { if (window.drawChart) drawChart(); }, 280);
+  }
+  document.getElementById('panel-close').addEventListener('click', function () { setCollapsed(true); });
+  document.getElementById('panel-open').addEventListener('click', function () { setCollapsed(false); });
+  document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) {
+    b.addEventListener('click', function () { openTab(b.dataset.open); setCollapsed(false); });
   });
 
   /* ---------- Mehr / Weniger ---------- */
@@ -396,6 +424,9 @@
     document.getElementById('ai-empty').style.display = '';
     prompt.focus();
   });
+
+  window.drawChart = drawChart;
+  try { if (localStorage.getItem('lincomPanelCollapsed') === '1') setCollapsed(true); } catch (e) {}
 
   if (window.lucide) lucide.createIcons();
 </script>

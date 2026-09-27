@@ -39,7 +39,45 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) minmax(480px, 44%);
   height: 100vh;
+  transition: grid-template-columns 0.25s ease;
 }
+
+/* ---------- Eingeklappter rechter Bereich ---------- */
+.app.panel-collapsed { grid-template-columns: 240px minmax(0, 1fr) 76px; }
+.rail { display: none; }
+.app.panel-collapsed .panel-top,
+.app.panel-collapsed .tab-body { display: none !important; }
+.app.panel-collapsed .panel { background: #fbfbfa; }
+.app.panel-collapsed .rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 6px 12px;
+  height: 100%;
+  animation: rail-in 0.2s ease;
+}
+@keyframes rail-in { from { opacity: 0; } to { opacity: 1; } }
+.rail-btn {
+  width: 64px;
+  border: 0;
+  background: none;
+  border-radius: var(--r-lg);
+  padding: 9px 4px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.rail-btn:hover { background: var(--hover); color: var(--ink); }
+.rail-btn .icon { width: 18px; height: 18px; }
+.rail-open { padding: 7px 4px; margin-bottom: 6px; border-bottom: 1px solid var(--line); border-radius: var(--r); }
+.rail-spacer { flex: 1; }
+.rail .menu { top: auto; bottom: 0; right: calc(100% + 10px); }
 
 /* ---------- Linke Seitenleiste ---------- */
 .sidebar {
@@ -250,18 +288,22 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
 
 /* ---------- Rechter Bereich (Tabs) ---------- */
 .panel {
-  border-left: 1px solid var(--line);
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  /* weicher Übergang vom hellen Lincom- zum dunklen Atlas-Bereich */
+  box-shadow: -1px 0 0 rgba(15, 15, 15, 0.08), -14px 0 32px -10px rgba(15, 15, 15, 0.22);
 }
 
 .panel-top {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(15, 15, 15, 0.12);
   height: 45px;
   padding-right: 10px;
+  background: #fbfbfa;
 }
 
 .tab {
@@ -284,7 +326,20 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
   background: var(--ink);
 }
 
-.avatar-wrap { margin-left: auto; position: relative; display: flex; align-items: center; }
+.panel-actions { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.panel-collapse {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: none;
+  border-radius: var(--r);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.panel-collapse:hover { background: var(--hover); color: var(--ink); }
+.avatar-wrap { position: relative; display: flex; align-items: center; }
 .avatar {
   width: 28px;
   height: 28px;
@@ -452,12 +507,17 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
 /* ---------- Responsive ---------- */
 @media (max-width: 1280px) {
   .app { grid-template-columns: 220px minmax(0, 1fr); height: auto; min-height: 100vh; }
-  .panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); height: 640px; }
+  .panel { grid-column: 1 / -1; height: 640px; box-shadow: 0 -1px 0 rgba(15, 15, 15, 0.08), 0 -14px 32px -10px rgba(15, 15, 15, 0.2); }
+  .app.panel-collapsed { grid-template-columns: 220px minmax(0, 1fr); }
+  .app.panel-collapsed .panel { height: auto; }
+  .app.panel-collapsed .rail { flex-direction: row; justify-content: center; height: auto; }
+  .rail-open { border-bottom: 0; margin-bottom: 0; }
+  .rail .menu { top: auto; bottom: calc(100% + 8px); right: 0; }
   .sidebar { grid-row: span 2; }
 }
 
 @media (max-width: 860px) {
-  .app { grid-template-columns: 1fr; }
+  .app, .app.panel-collapsed { grid-template-columns: 1fr; }
   .sidebar { display: none; }
   .main { padding: 32px 16px; }
   .cards { grid-template-columns: 1fr; }
@@ -484,6 +544,7 @@ button { font-family: inherit; font-size: inherit; color: inherit; }
   background: var(--at-bg);
   color: var(--at-ink);
   font-size: 14px;
+  box-shadow: inset 0 10px 14px -12px rgba(0, 0, 0, 0.55);
 }
 
 .atlas.atlas-light {
