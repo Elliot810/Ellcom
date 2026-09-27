@@ -73,7 +73,8 @@
 
     var html = '<div class="topbar"><button class="icon-btn menu-btn" id="menu-btn" aria-label="Menü">' + L.icon('menu') + '</button>' +
       '<nav class="crumbs">' + crumbs.join('<span class="crumb-sep">/</span>') + '</nav><span class="spacer"></span>' +
-      '<span class="topbar-note">' + L.icon('flask-conical') + 'Demo · Beispieldaten</span></div>';
+      '<span class="topbar-note">' + L.icon('flask-conical') + 'Demo · Beispieldaten</span>' +
+      '<button class="topbar-btn" id="tour-btn" title="Einführung starten">' + L.icon('graduation-cap') + '<span>Einführung</span></button></div>';
     html += '<div class="page' + (page.wide ? ' page-wide' : '') + '">';
     if (page.pre) html += page.pre;
     if (!page.noHead) {
@@ -95,6 +96,7 @@
     lastKey = key;
     renderSidebar(r);
     L.refreshIcons();
+    document.getElementById('tour-btn').addEventListener('click', function () { if (L.tour) L.tour.start(); });
     document.getElementById('menu-btn').addEventListener('click', function () { document.querySelector('.app').classList.toggle('sidebar-open'); });
     document.querySelector('.app').classList.remove('sidebar-open');
     if (page.mount) page.mount(main.querySelector('.page-body'), main);
@@ -114,5 +116,6 @@
     window.addEventListener('hashchange', L.render);
     document.getElementById('sidebar-backdrop').addEventListener('click', function () { document.querySelector('.app').classList.remove('sidebar-open'); });
     L.render();
+    if (L.tour) L.tour.auto();
   };
 })(window.L);

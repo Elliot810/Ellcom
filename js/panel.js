@@ -112,6 +112,7 @@
 
   /* ---------- Atlas: Demo-Antworten aus Lincom-Daten ---------- */
   L.atlasReply = function (text) {
+    if (L.tourAnswer) { var ta = L.tourAnswer(text); if (ta) return ta; }
     var q = text.toLowerCase(), S = L.S, T = L.todayIso();
     if (/rechnung|forderung|zahl|offen|mahn/.test(q) && L.on('finanzen')) {
       var open = S.invoices.filter(function (i) { return i.status === 'Offen'; });
@@ -144,6 +145,12 @@
     return 'In dieser Demo antworte ich mit Daten aus deinem Lincom-Konto. Frag mich zum Beispiel nach offenen Rechnungen, Abwesenheiten, dem Schichtplan, der Liquidität, Aufgaben oder Fristen. Die echte Anbindung an Atlas folgt.';
   };
 
+  // Nur Live-Daten zu einem Stichwort (für die Einführungstour)
+  L.atlasData = function (keyword) {
+    var r = L.atlasReply(keyword);
+    return /^In dieser Demo antworte/.test(r) ? null : r;
+  };
+
   /* ---------- Initialisierung ---------- */
   L.initPanel = function () {
     var S = L.S, email = L.email;
@@ -158,6 +165,7 @@
     document.addEventListener('click', function () { document.getElementById('menu').classList.remove('is-open'); });
     document.getElementById('logout').addEventListener('click', function () { sessionStorage.removeItem('lincomDemoEmail'); window.location.href = 'index.html'; });
     document.getElementById('menu-settings').addEventListener('click', function () { L.go('#/einstellungen'); });
+    document.getElementById('menu-tour').addEventListener('click', function () { if (L.tour) L.tour.start(); });
     document.getElementById('at-theme').addEventListener('click', function () { document.getElementById('tab-atlas').classList.toggle('atlas-light'); });
 
     function openTab(name) {
@@ -166,6 +174,7 @@
       if (name === 'tpl') renderTemplates();
       if (name === 'web') renderWeb();
     }
+    L.openTab = openTab;
     document.querySelectorAll('.tab').forEach(function (tab) { tab.addEventListener('click', function () { openTab(tab.dataset.tab); }); });
 
     var appEl = document.querySelector('.app'), avatarWrap = document.getElementById('avatar-wrap');
@@ -176,6 +185,7 @@
       try { localStorage.setItem('lincomPanelCollapsed', c ? '1' : '0'); } catch (e) {}
       setTimeout(L.redrawCharts, 300);
     }
+    L.setPanelCollapsed = function (c) { if (appEl.classList.contains('panel-collapsed') !== c) setCollapsed(c); };
     document.getElementById('panel-close').addEventListener('click', function () { setCollapsed(true); });
     document.getElementById('panel-open').addEventListener('click', function () { setCollapsed(false); });
     document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) { b.addEventListener('click', function () { openTab(b.dataset.open); setCollapsed(false); }); });
@@ -200,7 +210,9 @@
       var typing = document.createElement('div'); typing.className = 'msg ai typing'; typing.innerHTML = '<span></span><span></span><span></span>'; messages.appendChild(typing);
       setTimeout(function () { typing.remove(); addMsg(L.atlasReply(text), 'ai'); }, 650);
     }
-    composer.addEventListener('submit', function (e) { e.preventDefault(); var t = prompt.value.trim(); if (!t) return; prompt.value = ''; send(t); });
+    function autosize() { prompt.style.height = 'auto'; prompt.style.height = Math.min(prompt.scrollHeight, 180) + 'px'; }
+    prompt.addEventListener('input', autosize);
+    composer.addEventListener('submit', function (e) { e.preventDefault(); var t = prompt.value.trim(); if (!t) return; prompt.value = ''; autosize(); send(t); });
     prompt.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); composer.requestSubmit(); } });
     document.querySelectorAll('.at-suggest').forEach(function (b) { b.addEventListener('click', function () { send(b.textContent); }); });
     document.getElementById('new-chat').addEventListener('click', function () {

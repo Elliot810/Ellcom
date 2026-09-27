@@ -1391,3 +1391,95 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
   table.db { min-width: 680px; }
   table.db td, table.db th { white-space: nowrap; }
 }
+
+/* ============================================================
+   Einführungstour: Spotlight + Erklärbox
+   ============================================================ */
+.topbar-btn { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px; margin-left: 10px; border: 0; background: none; border-radius: var(--r); font: inherit; font-size: 13px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+.topbar-btn:hover { background: var(--hover); color: var(--ink); }
+.topbar-btn .icon { width: 15px; height: 15px; }
+
+.tour { position: fixed; inset: 0; z-index: 900; pointer-events: none; visibility: hidden; }
+.tour.is-on { pointer-events: auto; visibility: visible; }
+.tour-block { position: absolute; inset: 0; }
+.tour-spot {
+  position: fixed; left: 50%; top: 50%; width: 0; height: 0;
+  border-radius: var(--r-lg);
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55), 0 0 0 9999px rgba(24, 24, 22, 0.74);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.tour.is-on .tour-spot { opacity: 1; }
+.tour.is-moving .tour-spot { transition: opacity 0.3s ease, left 0.42s cubic-bezier(0.4, 0, 0.2, 1), top 0.42s cubic-bezier(0.4, 0, 0.2, 1), width 0.42s cubic-bezier(0.4, 0, 0.2, 1), height 0.42s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.tour-pop {
+  position: fixed; left: 0; top: 0;
+  width: 352px; max-width: calc(100vw - 32px);
+  background: #fff; color: var(--ink);
+  border-radius: var(--r-lg);
+  padding: 0 18px 14px;
+  box-shadow: rgba(15, 15, 15, 0.05) 0 0 0 1px, rgba(15, 15, 15, 0.12) 0 4px 8px, rgba(15, 15, 15, 0.24) 0 14px 36px;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.tour-pop.is-hidden { opacity: 0; transform: translateY(6px); pointer-events: none; }
+.tour-pop.nudge { animation: tour-nudge 0.32s ease; }
+@keyframes tour-nudge { 0%, 100% { transform: none; } 30% { transform: scale(1.025); } 60% { transform: scale(0.995); } }
+
+.tour-progress { position: relative; z-index: 1; height: 3px; margin: 0 -18px 12px; background: var(--line); border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; }
+.tour-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s ease; }
+.tour-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.tour-count { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+.tour-x { width: 24px; height: 24px; margin-right: -6px; border: 0; background: none; border-radius: var(--r); display: grid; place-items: center; color: var(--ink-3); cursor: pointer; }
+.tour-x:hover { background: var(--hover); color: var(--ink); }
+.tour-x .icon { width: 15px; height: 15px; }
+.tour-title { margin: 0 0 6px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.tour-text { margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.tour-foot { display: flex; align-items: center; gap: 6px; }
+.tour-foot .spacer { flex: 1; }
+.tour-back { border-color: transparent; background: none; color: var(--ink-2); padding-left: 6px; }
+.tour-back:hover { background: var(--hover); color: var(--ink); }
+.tour-ask .icon { color: var(--accent); }
+.tour-foot .btn .icon { width: 14px; height: 14px; }
+.tour-pop .btn:focus { outline: none; }
+.tour-pop .btn:focus-visible { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.tour-arrow { position: absolute; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); display: none; }
+.tour-arrow.at-bottom { display: block; top: -6px; margin-left: -6px; box-shadow: -1px -1px 0 rgba(15, 15, 15, 0.06); }
+.tour-arrow.at-top { display: block; bottom: -6px; margin-left: -6px; box-shadow: 1px 1px 0 rgba(15, 15, 15, 0.06); }
+.tour-arrow.at-right { display: block; left: -6px; margin-top: -6px; box-shadow: -1px 1px 0 rgba(15, 15, 15, 0.06); }
+.tour-arrow.at-left { display: block; right: -6px; margin-top: -6px; box-shadow: 1px -1px 0 rgba(15, 15, 15, 0.06); }
+
+/* Fortsetzen-Leiste, solange Atlas gefragt wird */
+.tour-resume {
+  position: fixed; left: 16px; bottom: 16px; z-index: 850;
+  display: flex; align-items: center;
+  background: #2f2e2b; color: #fff; border-radius: var(--r-lg);
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.22);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.tour-resume.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.tour-resume button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.tour-resume-go { display: flex; align-items: center; gap: 8px; padding: 9px 6px 9px 12px; font-size: 13.5px; }
+.tour-resume-go small { color: rgba(255, 255, 255, 0.55); font-size: 12px; }
+.tour-resume-go .icon { width: 14px; height: 14px; color: #7ec3ff; }
+.tour-resume-x { width: 30px; height: 30px; margin-right: 4px; display: grid; place-items: center; border-radius: var(--r); color: rgba(255, 255, 255, 0.6) !important; }
+.tour-resume-x:hover { background: rgba(255, 255, 255, 0.1); color: #fff !important; }
+.tour-resume-x .icon { width: 14px; height: 14px; }
+
+/* Atlas: vorbefülltes Eingabefeld kurz hervorheben, mehrzeilige Antworten */
+.at-composer { transition: box-shadow 0.3s ease, border-color 0.3s ease; }
+.at-composer.tour-flash { animation: tour-flash 1.6s ease; }
+@keyframes tour-flash { 0%, 100% { box-shadow: 0 0 0 0 rgba(35, 131, 226, 0); } 25%, 60% { box-shadow: 0 0 0 3px rgba(35, 131, 226, 0.45); border-color: #2383e2; } }
+.at-composer textarea { max-height: 180px; overflow-y: auto; }
+.atlas .msg { white-space: pre-line; }
+
+@media (max-width: 860px) {
+  .topbar-btn span { display: none; }
+  .tour-pop { width: calc(100vw - 32px); }
+  .tour-resume { top: 12px; bottom: auto; transform: translateY(-10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot, .tour.is-moving .tour-spot, .tour-pop, .tour-resume { transition: none; }
+}
