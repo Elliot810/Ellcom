@@ -170,6 +170,7 @@
 
     function openTab(name) {
       document.querySelectorAll('.tab').forEach(function (t) { t.classList.toggle('is-active', t.dataset.tab === name); });
+      document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) { b.classList.toggle('is-active', b.dataset.open === name); });
       document.querySelectorAll('.tab-body').forEach(function (b) { b.classList.toggle('is-active', b.id === 'tab-' + name); });
       if (name === 'tpl') renderTemplates();
       if (name === 'web') renderWeb();
@@ -178,18 +179,31 @@
     document.querySelectorAll('.tab').forEach(function (tab) { tab.addEventListener('click', function () { openTab(tab.dataset.tab); }); });
 
     var appEl = document.querySelector('.app'), avatarWrap = document.getElementById('avatar-wrap');
+    // Die Leiste bleibt immer rechts; der Bereich startet eingeklappt
+    var toggle = document.getElementById('panel-open');
+    document.getElementById('rail').appendChild(avatarWrap);
     function setCollapsed(c) {
       appEl.classList.toggle('panel-collapsed', c);
       document.getElementById('menu').classList.remove('is-open');
-      if (c) document.getElementById('rail').appendChild(avatarWrap); else document.getElementById('panel-actions').appendChild(avatarWrap);
-      try { localStorage.setItem('lincomPanelCollapsed', c ? '1' : '0'); } catch (e) {}
+      toggle.innerHTML = L.icon(c ? 'panel-right-open' : 'panel-right-close');
+      toggle.title = c ? 'Bereich ausklappen' : 'Bereich einklappen';
+      toggle.setAttribute('aria-label', toggle.title);
+      L.refreshIcons();
       setTimeout(L.redrawCharts, 300);
     }
+    L.panelCollapsed = function () { return appEl.classList.contains('panel-collapsed'); };
     L.setPanelCollapsed = function (c) { if (appEl.classList.contains('panel-collapsed') !== c) setCollapsed(c); };
     document.getElementById('panel-close').addEventListener('click', function () { setCollapsed(true); });
-    document.getElementById('panel-open').addEventListener('click', function () { setCollapsed(false); });
-    document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) { b.addEventListener('click', function () { openTab(b.dataset.open); setCollapsed(false); }); });
-    try { if (localStorage.getItem('lincomPanelCollapsed') === '1') setCollapsed(true); } catch (e) {}
+    toggle.addEventListener('click', function () { setCollapsed(!L.panelCollapsed()); });
+    document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        // Klick auf den offenen Tab klappt zu, sonst Tab öffnen (und ggf. ausklappen)
+        if (!L.panelCollapsed() && b.classList.contains('is-active')) return setCollapsed(true);
+        openTab(b.dataset.open); setCollapsed(false);
+      });
+    });
+    openTab('atlas');
+    setCollapsed(true);
 
     document.getElementById('more-toggle').addEventListener('click', function () {
       var extra = document.getElementById('ai-extra');

@@ -32,7 +32,7 @@
   function seed() {
     var T = L.todayIso(), A = anchorWeek(), P = L.add(A, -7), N = L.add(A, 7);
     var s = {
-      version: 1,
+      version: 2,
       anchor: A,
       company: { name: '', branche: 'Event & Catering' },
       modules: { finanzen: true, kunden: true, personal: true, schichten: true, organisation: true, verwaltung: true },
@@ -251,7 +251,7 @@
   L.load = function () {
     var s = null;
     try { s = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-    if (!s || s.version !== 1 || s.anchor !== anchorWeek()) { s = seed(); }
+    if (!s || s.version !== 2 || s.anchor !== anchorWeek()) { s = seed(); }
     L.S = s;
     L.save();
   };

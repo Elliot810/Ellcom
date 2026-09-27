@@ -42,6 +42,13 @@
       more: 'Die Liste ist deine tägliche Arbeitsliste. Lincom sucht in allen Modulen nach Dingen, die eine Entscheidung brauchen, und sortiert sie hier ein.\n\nDie Buttons rechts erledigen den Punkt direkt: Urlaub genehmigen, eine Zahlungserinnerung schicken oder offene Stunden abrechnen. Ist ein Punkt erledigt, verschwindet er automatisch. Am besten schaust du einmal am Tag hier vorbei.'
     },
     {
+      route: '#/uebersicht', target: '#sidebar .nav-label + .nav-item', place: 'right',
+      title: 'Jetzt geht es durch die Bereiche',
+      text: 'Die Tour öffnet gleich nacheinander die einzelnen Bereiche aus dem Menü hier links. Welche Seite gerade offen ist, steht jeweils oben in der Erklärbox und ist links im Menü markiert.',
+      ask: 'Erkläre mir, wie die Bereiche in Lincom aufgebaut sind',
+      more: 'Jeder Bereich im linken Menü ist ein eigenes Modul mit Unterseiten – zum Beispiel „Finanzen & Liquidität“ mit Übersicht, Rechnungen und Ausgaben. Der geöffnete Bereich ist links hervorgehoben, seine Unterseiten klappen darunter auf, und oben auf der Seite siehst du den Pfad (z. B. Lincom GmbH / Finanzen & Liquidität / Übersicht).\n\nÜber „Übersicht“ ganz oben im Menü kommst du jederzeit zurück zum Start.'
+    },
+    {
       mod: 'finanzen', route: '#/finanzen/uebersicht', target: '#main .split', place: 'bottom',
       title: 'Liquidität & Prognose',
       text: 'Kontostand, Verlauf und eine Prognose für die nächsten drei Monate. Änderst du rechts die Annahmen, rechnet die Kurve sofort neu.',
@@ -81,7 +88,7 @@
     {
       mod: 'schichten', route: '#/schichten/plan', target: '#main .plan-wrap', place: 'top',
       title: 'Schichtplan',
-      text: 'Plane die Woche per Drag & Drop. Lincom erkennt Konflikte mit Urlaub oder Verfügbarkeit, zieht Pausen nach Arbeitszeitgesetz ab und rechnet die Personalkosten sofort mit.',
+      text: 'Plane die Woche per Drag & Drop. Lincom erkennt Konflikte mit Urlaub oder Verfügbarkeit, zieht Pausen nach Arbeitszeitgesetz ab und rechnet die Personalkosten sofort mit. Auf der Seite erklärt dir „Kurze Tour“ alles im Detail.',
       ask: 'Wie geht das Planen im Schichtplan',
       more: 'So planst du eine Schicht:\n\n1. Fahre über eine Tageszelle und klick auf das kleine Plus – oder oben auf „Schicht“ –, um eine neue Schicht anzulegen.\n2. Bestehende Schichten ziehst du mit der Maus auf eine andere Person oder einen anderen Tag.\n3. Ein Klick auf eine Schicht öffnet sie zum Bearbeiten.\n\nRot umrandete Schichten haben einen Konflikt, etwa weil die Person Urlaub hat. Pausen werden nach dem Arbeitszeitgesetz automatisch abgezogen (30 Minuten ab 6 Stunden, 45 Minuten ab 9 Stunden). Die Kosten oben fließen direkt in die Liquiditätsprognose.',
       data: 'schicht'
@@ -117,6 +124,13 @@
       more: 'Unter „Module verwalten“ kannst du jeden Bereich einzeln ein- oder ausschalten. Es gibt außerdem Voreinstellungen nach Unternehmensart: „Freelancer“ (ohne Personal und Schichten), „Startup / Agentur“ (mit Personal) und „Gastro / Handel / Events“ (mit allem).\n\nAusgeschaltete Module verschwinden aus Navigation und Übersicht. Die Daten bleiben erhalten – schaltest du ein Modul wieder ein, ist alles wieder da.'
     },
     {
+      route: '#/uebersicht', target: '#rail', panel: 'closed', place: 'left', pad: 0,
+      title: 'Werkzeuge rechts',
+      text: 'Hier rechts findest du Atlas AI, Webdesign und Templates. Ein Klick klappt den Bereich auf, das Symbol ganz oben klappt ihn wieder zu.',
+      ask: 'Wie funktioniert die Werkzeugleiste rechts',
+      more: 'Die Leiste rechts ist immer da, damit sie nicht im Weg ist, bleibt der Bereich aber zunächst eingeklappt. Klick auf Atlas AI, Webdesign oder Templates, und der Bereich öffnet sich direkt mit diesem Werkzeug. Klickst du das aktive Werkzeug noch einmal an – oder das Symbol ganz oben –, klappt er wieder zu.'
+    },
+    {
       route: '#/uebersicht', target: '#tab-atlas', panel: 'atlas', place: 'left', pad: 0,
       title: 'Atlas AI',
       text: 'Deine KI-Assistenz. Atlas kennt deine Lincom-Daten und beantwortet Fragen zu Rechnungen, Schichten, Urlaub oder Fristen.',
@@ -124,7 +138,7 @@
       more: 'Ich beantworte Fragen zu deinen Daten in Lincom – zum Beispiel:\n\n• „Welche Rechnungen sind offen?“\n• „Wer ist heute abwesend?“\n• „Wie sieht der Schichtplan diese Woche aus?“\n• „Wie entwickelt sich unsere Liquidität?“\n• „Welche Fristen stehen an?“\n\nIn dieser Demo antworte ich mit den Beispieldaten deines Kontos. Die vollständige Anbindung an Atlas folgt.'
     },
     {
-      route: '#/uebersicht', target: '.panel-top .tab[data-tab="web"], .panel-top .tab[data-tab="tpl"]', panel: true, place: 'bottom',
+      route: '#/uebersicht', target: '.rail-btn[data-open="web"], .rail-btn[data-open="tpl"]', place: 'left',
       title: 'Webdesign & Templates',
       text: 'Unter „Webdesign“ gibst du Änderungen an deiner Webseite in Auftrag. Unter „Templates“ findest du Vorlagen für Angebote, Verträge und Mahnungen – vorausgefüllt mit deinen Daten.',
       ask: 'Erkläre mir Webdesign und Templates',
@@ -138,6 +152,84 @@
       more: 'Ein guter Start in drei Schritten:\n\n1. Schau unter „Module verwalten“, welche Bereiche du brauchst, und schalte den Rest ab.\n2. Trag unter „Einstellungen“ Firmenname und Branche ein – der Name erscheint dann automatisch in Rechnungen und Vorlagen.\n3. Arbeite die Liste „Braucht deine Aufmerksamkeit“ auf der Übersicht ab.\n\nWenn du irgendwo nicht weiterkommst, frag mich einfach hier im Chat.'
     }
   ];
+
+  var P = '#/schichten/plan';
+  var SHIFT_STEPS = [
+    {
+      route: P, target: '#main .plan', place: 'top', pad: 4,
+      title: 'Dein Wochenplan',
+      text: 'Zeilen sind deine Mitarbeitenden, Spalten die Tage. Die Farbe einer Schicht zeigt den Bereich: Küche, Service, Events oder Logistik.',
+      ask: 'Erkläre mir den Aufbau des Schichtplans',
+      more: 'Der Schichtplan zeigt immer eine Woche. Jede Zeile gehört zu einer Person, ganz oben stehen die noch offenen Schichten. Jede Schicht zeigt Uhrzeit und Bereich, die Farbe steht für den Bereich (Legende unter dem Plan). Der heutige Tag ist hervorgehoben.',
+      data: 'schicht'
+    },
+    {
+      route: P, target: '#main .cal-toolbar', place: 'bottom',
+      title: 'Woche & Kennzahlen',
+      text: 'Mit den Pfeilen blätterst du durch die Wochen. Rechts siehst du geplante Stunden, Personalkosten, offene Schichten und Konflikte.',
+      ask: 'Wie lese ich die Kennzahlen im Schichtplan',
+      more: 'Die vier Kennzahlen beziehen sich immer auf die angezeigte Woche:\n\n• Geplante Stunden – nach Abzug der gesetzlichen Pausen.\n• Personalkosten – Stundenlohn mal Stunden plus Arbeitgeberanteil zur Sozialversicherung.\n• Offen – Schichten, die noch niemand übernommen hat.\n• Konflikte – Schichten, bei denen die Person Urlaub hat, krank ist oder nicht verfügbar ist.',
+      data: 'schicht'
+    },
+    {
+      route: P, target: '#main .open-row', place: 'bottom',
+      title: 'Offene Schichten',
+      text: 'Schichten ohne feste Person landen hier. Zieh sie einfach auf eine Mitarbeiterin oder einen Mitarbeiter, um sie zu vergeben.',
+      ask: 'Wie vergebe ich offene Schichten',
+      more: 'Offene Schichten sind geplant, aber noch nicht besetzt. Du vergibst sie, indem du sie mit der Maus in die Zeile einer Person ziehst. Lincom prüft dabei sofort, ob die Person an dem Tag verfügbar ist – sonst wird die Schicht rot markiert.\n\nNeue offene Schichten legst du über das Plus in der Zeile „Offene Schichten“ an.'
+    },
+    {
+      route: P, target: '#main .plan tbody tr:not(.open-row) .shift', first: true, place: 'bottom',
+      title: 'Schichten verschieben',
+      text: 'Zieh eine Schicht mit der Maus auf eine andere Person oder einen anderen Tag. Ein Klick öffnet sie zum Bearbeiten.',
+      ask: 'Wie geht das Verschieben und Bearbeiten von Schichten',
+      more: 'Verschieben: Schicht anklicken, gedrückt halten und in eine andere Zelle ziehen. Kosten, Stunden und Konflikte werden sofort neu berechnet.\n\nBearbeiten: Ein Klick auf die Schicht öffnet ein Fenster, in dem du Uhrzeit, Bereich und Person änderst oder die Schicht löschst. Dort siehst du vor dem Speichern auch, ob es einen Konflikt gibt und was die Schicht kostet.'
+    },
+    {
+      route: P, target: '#main .shift.conflict', first: true, place: 'bottom',
+      title: 'Konflikte',
+      text: 'Rot umrandet heißt: Die Person hat Urlaub, ist krank oder an diesem Tag nicht verfügbar. Fahr mit der Maus darüber, um den Grund zu sehen.',
+      ask: 'Wie löse ich einen Konflikt im Schichtplan',
+      more: 'Ein Konflikt entsteht, wenn eine Schicht mit einer Abwesenheit oder der Verfügbarkeit der Person kollidiert – zum Beispiel, weil ein Urlaubsantrag genehmigt wurde. Lösen kannst du ihn auf drei Wegen:\n\n1. Die Schicht auf eine andere Person ziehen.\n2. Sie in die Zeile „Offene Schichten“ ziehen und später vergeben.\n3. Sie über die Tauschbörse anbieten, damit jemand einspringt.'
+    },
+    {
+      route: P, target: '#main .cell.na', first: true, place: 'bottom',
+      title: 'Verfügbarkeit',
+      text: 'Schraffierte Felder zeigen, wann jemand nicht arbeiten kann – etwa an festen freien Tagen oder vor dem ersten Arbeitstag.',
+      ask: 'Wo stelle ich die Verfügbarkeit von Mitarbeitenden ein',
+      more: 'Die Verfügbarkeit gehört zur Personalakte: Unter Personal › Mitarbeiter › (Person) › „Bearbeiten“ legst du fest, an welchen Wochentagen jemand nicht eingeplant werden kann. Der Schichtplan übernimmt das automatisch und schraffiert diese Tage. Neue Mitarbeitende erscheinen ab ihrem ersten Arbeitstag.'
+    },
+    {
+      route: P, target: '#main .plan tbody tr:not(.open-row) .plan-name', first: true, place: 'right',
+      title: 'Stunden im Blick',
+      text: 'Unter jedem Namen stehen die geplanten Stunden dieser Woche im Vergleich zum Vertrag. Wird es mehr als vereinbart, färbt sich die Zahl orange.',
+      ask: 'Erkläre mir die Stundenanzeige unter den Namen',
+      more: 'Die erste Zahl sind die geplanten Stunden der Woche (nach Abzug der Pausen), die zweite die vertraglichen Wochenstunden. Liegt jemand darüber, wird die Zahl orange – ein Hinweis auf Überstunden. Ein Klick auf den Namen öffnet die Personalakte.'
+    },
+    {
+      route: P, target: '#main a.pill[href="#/finanzen"]', place: 'bottom', pad: 4,
+      title: 'Kosten fließen in die Finanzen',
+      text: 'Jede Änderung am Plan rechnet die Personalkosten neu. Der Betrag landet direkt in deiner Liquiditätsprognose.',
+      ask: 'Wie hängen Schichtplan und Finanzen zusammen',
+      more: 'Lincom rechnet aus dem Schichtplan die Personalkosten: geplante Stunden mal Stundenlohn plus Arbeitgeberanteil zur Sozialversicherung. Hochgerechnet auf den Monat fließt dieser Wert unter Finanzen › Übersicht in die Liquiditätsprognose. Planst du also eine zusätzliche Schicht, siehst du sofort, was sie dein Konto kostet. Ein Klick auf den Betrag bringt dich dorthin.',
+      data: 'liquidität'
+    },
+    {
+      route: P, target: '#copy-w, #add-s', place: 'bottom', pad: 4,
+      title: 'Schneller planen',
+      text: '„Schicht“ legt eine neue Schicht an. „Vorwoche übernehmen“ kopiert den kompletten Plan der letzten Woche in die angezeigte Woche.',
+      ask: 'Wie plane ich eine ganze Woche am schnellsten',
+      more: 'Am schnellsten geht es so:\n\n1. Mit dem Pfeil zur nächsten Woche wechseln.\n2. „Vorwoche übernehmen“ klicken – alle Schichten werden kopiert, doppelte werden übersprungen.\n3. Nur noch Änderungen per Drag & Drop anpassen und Konflikte lösen.'
+    },
+    {
+      route: P, target: '#main .view-tab[href="#/schichten/tausch"], #main .view-tab[href="#/schichten/zeiten"]', place: 'bottom',
+      title: 'Tauschbörse & Zeiterfassung',
+      text: 'In der Tauschbörse bieten Mitarbeitende Schichten an und du siehst, wer einspringen kann. In der Zeiterfassung wird gestempelt, was wirklich gearbeitet wurde.',
+      ask: 'Erkläre mir Tauschbörse und Zeiterfassung',
+      more: 'Tauschbörse: Kann jemand eine Schicht nicht übernehmen, bietet er sie dort an. Lincom zeigt dir, wer an dem Tag verfügbar ist und noch Stunden frei hat – du bestätigst den Tausch mit einem Klick.\n\nZeiterfassung: Mit der Stempeluhr wird die tatsächliche Arbeitszeit erfasst. Stunden für Kunden kannst du dort direkt in eine Rechnung umwandeln.'
+    }
+  ];
+  var TOURS = { main: STEPS, schicht: SHIFT_STEPS };
 
   var st = null, seq = 0, els = null, raf = 0;
 
@@ -153,13 +245,14 @@
         '<span class="tour-arrow"></span>' +
         '<div class="tour-progress"><span></span></div>' +
         '<div class="tour-top"><span class="tour-count"></span><button class="tour-x" type="button" aria-label="Einführung beenden" title="Einführung beenden">' + L.icon('x') + '</button></div>' +
+        '<div class="tour-where"></div>' +
         '<h3 class="tour-title" id="tour-title"></h3>' +
         '<p class="tour-text"></p>' +
         '<div class="tour-foot">' +
           '<button class="btn btn-sm tour-back" type="button">' + L.icon('arrow-left') + 'Zurück</button>' +
           '<span class="spacer"></span>' +
           '<button class="btn btn-sm tour-ask" type="button">' + L.icon('sparkles') + 'Atlas fragen</button>' +
-          '<button class="btn btn-sm btn-primary tour-next" type="button">Verstanden!</button>' +
+          '<button class="btn btn-sm tour-next" type="button">Verstanden!</button>' +
         '</div>' +
       '</div>';
     var resume = document.createElement('div');
@@ -171,7 +264,7 @@
     els = {
       root: root, spot: root.querySelector('.tour-spot'), pop: root.querySelector('.tour-pop'), arrow: root.querySelector('.tour-arrow'),
       bar: root.querySelector('.tour-progress span'), count: root.querySelector('.tour-count'), title: root.querySelector('.tour-title'),
-      text: root.querySelector('.tour-text'), back: root.querySelector('.tour-back'), next: root.querySelector('.tour-next'),
+      text: root.querySelector('.tour-text'), where: root.querySelector('.tour-where'), back: root.querySelector('.tour-back'), next: root.querySelector('.tour-next'),
       resume: resume, resumeInfo: resume.querySelector('small')
     };
     els.back.onclick = function () { go(-1); };
@@ -198,7 +291,8 @@
   function visible(el) { var r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; }
   function targets(step) {
     if (!step.target) return [];
-    return [].slice.call(document.querySelectorAll(step.target)).filter(visible);
+    var list = [].slice.call(document.querySelectorAll(step.target)).filter(visible);
+    return step.first ? list.slice(0, 1) : list;
   }
   function union(list) {
     var r = null;
@@ -214,8 +308,8 @@
     if (L.closeModal) L.closeModal();
     var app = document.querySelector('.app'); if (app) app.classList.remove('sidebar-open');
     if (step.panel && L.setPanelCollapsed) {
-      L.setPanelCollapsed(false);
-      if (typeof step.panel === 'string') L.openTab(step.panel);
+      if (step.panel === 'closed') L.setPanelCollapsed(true);
+      else { L.setPanelCollapsed(false); if (typeof step.panel === 'string') L.openTab(step.panel); }
     }
     var h = location.hash || '#/uebersicht', moved = !!(step.route && h !== step.route);
     if (moved) L.go(step.route);
@@ -258,19 +352,33 @@
   }
 
   function reveal(t, force) {
-    var u = union(t), vh = window.innerHeight, big = (u.bottom - u.top) > vh * 0.55;
-    if (force && !(u.top < 60 || u.bottom > vh - 20 || big)) return;
+    var u = union(t), vh = window.innerHeight, vw = window.innerWidth, big = (u.bottom - u.top) > vh * 0.55;
+    if (force && !(u.top < 60 || u.bottom > vh - 20 || u.left < 0 || u.right > vw || big)) return;
     st.revealAt = Date.now();
-    t[0].scrollIntoView({ block: big ? 'start' : 'center', behavior: 'smooth' });
+    t[0].scrollIntoView({ block: big ? 'start' : 'center', inline: 'nearest', behavior: 'smooth' });
   }
 
   function fill(i) {
     var step = st.list[i], n = st.list.length;
     els.count.textContent = 'Schritt ' + (i + 1) + ' von ' + n;
     els.bar.style.width = ((i + 1) / n * 100) + '%';
+    var route = step.route || location.hash, changed = i > 0 && st.lastRoute && route !== st.lastRoute;
+    st.lastRoute = route;
+    if (changed) {
+      els.where.innerHTML = L.icon('arrow-right-left') + '<span>Seite gewechselt: <b>' + L.h(pageName(route)) + '</b></span>';
+      els.where.style.display = '';
+      L.refreshIcons();
+    } else els.where.style.display = 'none';
     els.title.textContent = step.title;
     els.text.textContent = step.text;
     els.back.style.display = i === 0 ? 'none' : '';
+  }
+
+  function pageName(route) {
+    var p = route.replace(/^#\/?/, '').split('/'), def = L.navDef(p[0]);
+    if (!def) return p[0] === 'einstellungen' ? 'Einstellungen' : 'Übersicht';
+    var sub = def.subs.filter(function (x) { return x[0] === (p[1] || def.subs[0][0]); })[0];
+    return def.label + ' › ' + (sub ? sub[1] : '');
   }
 
   function go(d) {
@@ -293,7 +401,7 @@
     var step = st.list[st.i], vw = window.innerWidth, vh = window.innerHeight, m = 16, gap = 14;
     var list = targets(step), r = list.length ? union(list) : null;
     // Ziel komplett außerhalb des Bildschirms (z. B. nach Neuaufbau der Seite) → erneut hinscrollen
-    if (r && (r.bottom < 0 || r.top > vh) && !st.busy && Date.now() - (st.revealAt || 0) > 800) reveal(list, false);
+    if (r && (r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw) && !st.busy && Date.now() - (st.revealAt || 0) > 800) reveal(list, false);
     var pw = els.pop.offsetWidth, ph = els.pop.offsetHeight;
     els.arrow.className = 'tour-arrow';
 
@@ -380,18 +488,21 @@
   }
 
   /* ---------- Start / Ende ---------- */
-  function start() {
+  function start(name) {
+    name = TOURS[name] ? name : 'main';
     build();
     var side = document.getElementById('sidebar'), sideOn = side && visible(side);
-    var list = STEPS.filter(function (s) {
+    var list = TOURS[name].filter(function (s) {
       if (s.mod && !L.on(s.mod)) return false;
       if (!sideOn && s.target && s.target.indexOf('#sidebar') === 0) return false;   // Handy: Seitenleiste ist eingeklappt
       return true;
     });
     if (st) cancelAnimationFrame(raf);
-    st = { list: list, i: 0, paused: false };
+    var was = L.panelCollapsed ? L.panelCollapsed() : true;
+    if (st) was = st.wasCollapsed;
+    st = { list: list, i: 0, paused: false, name: name, wasCollapsed: was, lastRoute: location.hash || '#/uebersicht' };
     L.tourPending = null;
-    try { localStorage.setItem('lincomTourSeen', '1'); } catch (e) {}
+    try { localStorage.setItem(key(name), '1'); } catch (e) {}
     els.resume.classList.remove('is-on');
     setBox(els.spot, window.innerWidth / 2, window.innerHeight / 2, 0, 0);
     els.root.classList.add('is-on');
@@ -399,9 +510,12 @@
     raf = requestAnimationFrame(loop);
   }
 
+  function key(name) { return name === 'main' ? 'lincomTourSeen' : 'lincomTourSeen_' + name; }
+
   function finish() {
     if (!els) return;
     seq++;
+    if (st && !st.paused && L.setPanelCollapsed) L.setPanelCollapsed(st.wasCollapsed);
     st = null;
     cancelAnimationFrame(raf);
     els.root.classList.remove('is-on');
@@ -413,10 +527,15 @@
     start: start,
     finish: finish,
     active: function () { return !!st; },
-    auto: function () {
+    auto: function (name) {
+      name = name || 'main';
+      if (st) return;                       // läuft schon eine Tour, nicht dazwischenfunken
       var seen = false;
-      try { seen = localStorage.getItem('lincomTourSeen') === '1'; } catch (e) {}
-      if (!seen) setTimeout(start, 500);
+      try {
+        seen = localStorage.getItem(key(name)) === '1';
+        if (name !== 'main' && localStorage.getItem(key('main')) !== '1') seen = true;   // große Tour zuerst
+      } catch (e) {}
+      if (!seen) setTimeout(function () { if (!st) start(name); }, 500);
     }
   };
 })(window.L);

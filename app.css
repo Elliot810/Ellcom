@@ -1427,7 +1427,7 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
 @keyframes tour-nudge { 0%, 100% { transform: none; } 30% { transform: scale(1.025); } 60% { transform: scale(0.995); } }
 
 .tour-progress { position: relative; z-index: 1; height: 3px; margin: 0 -18px 12px; background: var(--line); border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; }
-.tour-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s ease; }
+.tour-progress span { display: block; height: 100%; width: 0; background: rgba(55, 53, 47, 0.32); transition: width 0.4s ease; }
 .tour-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .tour-count { font-size: 12px; color: var(--ink-3); font-weight: 500; }
 .tour-x { width: 24px; height: 24px; margin-right: -6px; border: 0; background: none; border-radius: var(--r); display: grid; place-items: center; color: var(--ink-3); cursor: pointer; }
@@ -1439,10 +1439,15 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
 .tour-foot .spacer { flex: 1; }
 .tour-back { border-color: transparent; background: none; color: var(--ink-2); padding-left: 6px; }
 .tour-back:hover { background: var(--hover); color: var(--ink); }
-.tour-ask .icon { color: var(--accent); }
+.tour-ask .icon { color: var(--ink-2); }
+.tour-next { background: #f1f1ef; border-color: #e4e3df; color: var(--ink); font-weight: 500; }
+.tour-next:hover { background: #e9e8e4; border-color: #dcdbd6; }
+.tour-where { display: flex; align-items: center; gap: 6px; margin: 2px 0 8px; padding: 5px 8px; background: #f7f7f5; border-radius: var(--r); font-size: 12.5px; color: var(--ink-2); animation: pop 0.25s ease; }
+.tour-where b { font-weight: 600; color: var(--ink); }
+.tour-where .icon { width: 13px; height: 13px; flex-shrink: 0; color: var(--ink-3); }
 .tour-foot .btn .icon { width: 14px; height: 14px; }
 .tour-pop .btn:focus { outline: none; }
-.tour-pop .btn:focus-visible { box-shadow: 0 0 0 3px var(--accent-soft); }
+.tour-pop .btn:focus-visible { box-shadow: 0 0 0 3px rgba(55, 53, 47, 0.12); }
 
 .tour-arrow { position: absolute; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); display: none; }
 .tour-arrow.at-bottom { display: block; top: -6px; margin-left: -6px; box-shadow: -1px -1px 0 rgba(15, 15, 15, 0.06); }
@@ -1463,7 +1468,7 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
 .tour-resume button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
 .tour-resume-go { display: flex; align-items: center; gap: 8px; padding: 9px 6px 9px 12px; font-size: 13.5px; }
 .tour-resume-go small { color: rgba(255, 255, 255, 0.55); font-size: 12px; }
-.tour-resume-go .icon { width: 14px; height: 14px; color: #7ec3ff; }
+.tour-resume-go .icon { width: 14px; height: 14px; color: rgba(255, 255, 255, 0.75); }
 .tour-resume-x { width: 30px; height: 30px; margin-right: 4px; display: grid; place-items: center; border-radius: var(--r); color: rgba(255, 255, 255, 0.6) !important; }
 .tour-resume-x:hover { background: rgba(255, 255, 255, 0.1); color: #fff !important; }
 .tour-resume-x .icon { width: 14px; height: 14px; }
@@ -1471,7 +1476,7 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
 /* Atlas: vorbefülltes Eingabefeld kurz hervorheben, mehrzeilige Antworten */
 .at-composer { transition: box-shadow 0.3s ease, border-color 0.3s ease; }
 .at-composer.tour-flash { animation: tour-flash 1.6s ease; }
-@keyframes tour-flash { 0%, 100% { box-shadow: 0 0 0 0 rgba(35, 131, 226, 0); } 25%, 60% { box-shadow: 0 0 0 3px rgba(35, 131, 226, 0.45); border-color: #2383e2; } }
+@keyframes tour-flash { 0%, 100% { box-shadow: 0 0 0 0 rgba(35, 131, 226, 0); } 25%, 60% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.22); border-color: rgba(255, 255, 255, 0.5); } }
 .at-composer textarea { max-height: 180px; overflow-y: auto; }
 .atlas .msg { white-space: pre-line; }
 
@@ -1482,4 +1487,33 @@ table.doc-table .total td { font-weight: 700; border-top: 1px solid var(--ink); 
 }
 @media (prefers-reduced-motion: reduce) {
   .tour-spot, .tour.is-moving .tour-spot, .tour-pop, .tour-resume { transition: none; }
+}
+
+/* ============================================================
+   Rechter Bereich: Icon-Leiste bleibt immer rechts
+   ============================================================ */
+.app { grid-template-columns: 240px minmax(0, 1fr) minmax(540px, 46%); }
+.app.panel-collapsed { grid-template-columns: 240px minmax(0, 1fr) 76px; }
+.panel { display: grid; grid-template-columns: minmax(0, 1fr) 76px; grid-template-rows: minmax(0, 1fr); }
+.panel-top { display: none !important; }
+.panel > .tab-body { grid-column: 1; grid-row: 1; min-width: 0; }
+.rail, .app.panel-collapsed .rail {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  grid-column: 2; grid-row: 1;
+  padding: 8px 6px 12px; height: 100%; min-height: 0;
+  background: #fbfbfa; border-left: 1px solid var(--line);
+}
+.app.panel-collapsed .panel { display: flex; }
+.app.panel-collapsed .rail { border-left: 0; width: 100%; }
+.rail-btn.is-active { background: var(--active); color: var(--ink); }
+.app.panel-collapsed .rail-btn.is-active { background: none; color: var(--ink-2); }
+.app.panel-collapsed .rail-btn.is-active:hover { background: var(--hover); color: var(--ink); }
+@media (max-width: 1280px) {
+  .app, .app.panel-collapsed { grid-template-columns: 220px minmax(0, 1fr); }
+  .app.panel-collapsed .rail { flex-direction: row; justify-content: center; height: auto; }
+}
+@media (max-width: 860px) {
+  .app, .app.panel-collapsed { grid-template-columns: 1fr; }
+  .panel { grid-template-columns: minmax(0, 1fr) 68px; }
+  .rail-btn { width: 58px; }
 }

@@ -6,7 +6,7 @@
     { key: 'finanzen', icon: 'wallet', name: 'Finanzen & Liquidität', desc: 'Rechnungen, Ausgaben, Zahlungserinnerungen und Liquiditätsprognose.' },
     { key: 'kunden', icon: 'handshake', name: 'Kunden & Vertrieb', desc: 'Pipeline, Kundenkartei und Support-Tickets.' },
     { key: 'personal', icon: 'users', name: 'Personal', desc: 'Personalakte, Urlaub & Abwesenheiten, On-/Offboarding, Recruiting.' },
-    { key: 'schichten', icon: 'calendar-clock', name: 'Schichten & Zeiten', desc: 'Schichtplan mit Drag & Drop, Tauschbörse, Stempeluhr. Für Betriebe mit Schichtarbeit.' },
+    { key: 'schichten', icon: 'calendar-clock', name: 'Schichtplanung & Zeiten', desc: 'Schichtplan mit Drag & Drop, Tauschbörse, Stempeluhr. Für Betriebe mit Schichtarbeit.' },
     { key: 'organisation', icon: 'square-check-big', name: 'Organisation', desc: 'Aufgaben und Projekte für das ganze Team.' },
     { key: 'verwaltung', icon: 'landmark', name: 'Bürokratie & Verwaltung', desc: 'Fristen, Dokumentenablage und Pflichten-Check.' }
   ];

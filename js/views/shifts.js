@@ -94,13 +94,15 @@
 
     return {
       title: 'Schichtplan', icon: 'calendar-clock', wide: true,
-      actions: '<button class="btn" id="copy-w">' + L.icon('copy') + 'Vorwoche übernehmen</button><button class="btn btn-primary" id="add-s">' + L.icon('plus') + 'Schicht</button>',
+      actions: '<button class="btn" id="plan-tour">' + L.icon('graduation-cap') + 'Kurze Tour</button><button class="btn" id="copy-w">' + L.icon('copy') + 'Vorwoche übernehmen</button><button class="btn btn-primary" id="add-s">' + L.icon('plus') + 'Schicht</button>',
       html: html,
       mount: function (root, main) {
         root.querySelector('#w-prev').onclick = function () { S.ui.weekOffset = off - 1; L.save(); L.render(); };
         root.querySelector('#w-next').onclick = function () { S.ui.weekOffset = off + 1; L.save(); L.render(); };
         var now = root.querySelector('#w-now'); if (now) now.onclick = function () { S.ui.weekOffset = 0; L.save(); L.render(); };
         main.querySelector('#add-s').onclick = function () { shiftModal(null, { ws: ws }); };
+        main.querySelector('#plan-tour').onclick = function () { if (L.tour) L.tour.start('schicht'); };
+        if (L.tour) L.tour.auto('schicht');
         main.querySelector('#copy-w').onclick = function () {
           var prev = L.weekShifts(L.add(ws, -7));
           if (!prev.length) return L.toast('Die Vorwoche ist leer', 'warn');

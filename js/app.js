@@ -8,7 +8,7 @@
     { key: 'finanzen', label: 'Finanzen & Liquidität', icon: 'wallet', subs: [['uebersicht', 'Übersicht'], ['rechnungen', 'Rechnungen'], ['ausgaben', 'Ausgaben']] },
     { key: 'kunden', label: 'Kunden & Vertrieb', icon: 'handshake', subs: [['pipeline', 'Pipeline'], ['liste', 'Alle Kunden'], ['support', 'Support']] },
     { key: 'personal', label: 'Personal', icon: 'users', subs: [['mitarbeiter', 'Mitarbeiter'], ['abwesenheiten', 'Abwesenheiten'], ['onboarding', 'On- & Offboarding'], ['recruiting', 'Recruiting']] },
-    { key: 'schichten', label: 'Schichten & Zeiten', icon: 'calendar-clock', subs: [['plan', 'Schichtplan'], ['tausch', 'Tauschbörse'], ['zeiten', 'Zeiterfassung']] },
+    { key: 'schichten', label: 'Schichtplanung & Zeiten', icon: 'calendar-clock', subs: [['plan', 'Schichtplan'], ['tausch', 'Tauschbörse'], ['zeiten', 'Zeiterfassung']] },
     { key: 'organisation', label: 'Organisation', icon: 'square-check-big', subs: [['aufgaben', 'Aufgaben'], ['projekte', 'Projekte']] },
     { key: 'verwaltung', label: 'Bürokratie & Verwaltung', icon: 'landmark', subs: [['fristen', 'Fristen'], ['dokumente', 'Dokumente & Verträge'], ['pflichten', 'Pflichten-Check']] }
   ];
