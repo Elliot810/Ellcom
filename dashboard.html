@@ -14,95 +14,12 @@
 
 <div class="app">
 
-  <!-- Linke Seitenleiste -->
-  <aside class="sidebar">
-    <a href="index.html" class="brand"><span class="brand-mark">L</span>Lincom</a>
+  <!-- Linke Seitenleiste (wird per JS befüllt) -->
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-    <button class="nav-item is-active"><i data-lucide="layout-dashboard" class="icon"></i>Übersicht</button>
-
-    <div class="nav-label">Bereiche</div>
-    <button class="nav-item"><i data-lucide="landmark" class="icon"></i>Bürokratie &amp; Verwaltung</button>
-    <button class="nav-item"><i data-lucide="calendar-check" class="icon"></i>Organisation</button>
-    <button class="nav-item"><i data-lucide="wallet" class="icon"></i>Finanzen &amp; Liquidität</button>
-    <button class="nav-item"><i data-lucide="users" class="icon"></i>Kunden &amp; Vertrieb</button>
-
-    <div class="sidebar-bottom">
-      <button class="nav-item"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
-    </div>
-  </aside>
-
-  <!-- Mitte: Übersicht -->
-  <main class="main">
-    <span class="demo-tag">Demo · Beispieldaten</span>
-    <h1 id="welcome">Willkommen zurück!</h1>
-
-    <h2 class="section-title">Aktuelle Daten</h2>
-
-    <div class="cards">
-
-      <!-- Cashflow -->
-      <section class="card">
-        <div class="card-head">
-          <span class="card-title"><i data-lucide="trending-up" class="icon"></i>Cashflow</span>
-          <span class="card-meta">Jan – Sep 2026</span>
-        </div>
-        <div class="kpi" id="cf-kpi"></div>
-        <div class="kpi-sub" id="cf-sub"></div>
-        <div class="chart-wrap" id="cf-chart">
-          <svg aria-label="Cashflow-Verlauf Januar bis September"></svg>
-          <div class="chart-tip" id="cf-tip"></div>
-        </div>
-      </section>
-
-      <!-- Aufgaben -->
-      <section class="card">
-        <div class="card-head">
-          <span class="card-title"><i data-lucide="check-square" class="icon"></i>Aufgaben</span>
-          <span class="card-meta" id="task-meta"></span>
-        </div>
-        <ul class="task-list" id="tasks">
-          <li class="task"><input type="checkbox"><span class="task-text">Umsatzsteuer-Voranmeldung Q3</span><span class="prio"><span class="on"></span><span class="on"></span><span class="on"></span></span></li>
-          <li class="task"><input type="checkbox"><span class="task-text">Angebot für Kunde Weber senden</span><span class="prio"><span class="on"></span><span class="on"></span><span></span></span></li>
-          <li class="task is-done"><input type="checkbox" checked><span class="task-text">Rechnung #1042 erstellen</span><span class="prio"><span class="on"></span><span></span><span></span></span></li>
-          <li class="task"><input type="checkbox"><span class="task-text">AGB aktualisieren</span><span class="prio"><span class="on"></span><span></span><span></span></span></li>
-        </ul>
-        <button class="task-add"><i data-lucide="plus" class="icon"></i>Neue Aufgabe</button>
-      </section>
-
-      <!-- Mitarbeiter -->
-      <section class="card org">
-        <div class="card-head">
-          <span class="card-title"><i data-lucide="network" class="icon"></i>Mitarbeiter</span>
-          <span class="card-meta">5 Personen</span>
-        </div>
-        <svg class="org-chart" viewBox="0 0 320 170" aria-label="Organigramm">
-          <line class="edge" x1="160" y1="40" x2="70" y2="110"/>
-          <line class="edge" x1="160" y1="40" x2="160" y2="110"/>
-          <line class="edge" x1="160" y1="40" x2="250" y2="110"/>
-          <line class="edge" x1="250" y1="110" x2="290" y2="155"/>
-          <g class="node lead"><title>Geschäftsführung</title><circle cx="160" cy="40" r="18"/><text x="160" y="40" id="lead-initials">GF</text></g>
-          <g class="node"><title>Anna M. – Buchhaltung</title><circle cx="70" cy="110" r="16"/><text x="70" y="110">AM</text></g>
-          <g class="node"><title>Jonas K. – Vertrieb</title><circle cx="160" cy="110" r="16"/><text x="160" y="110">JK</text></g>
-          <g class="node"><title>Sara B. – Projekte</title><circle cx="250" cy="110" r="16"/><text x="250" y="110">SB</text></g>
-          <g class="node"><title>Tim R. – Werkstudent Projekte</title><circle cx="290" cy="155" r="12"/><text x="290" y="155" style="font-size:9px">TR</text></g>
-        </svg>
-      </section>
-
-      <!-- Support-Tickets -->
-      <section class="card">
-        <div class="card-head">
-          <span class="card-title"><i data-lucide="life-buoy" class="icon"></i>Support-Tickets</span>
-          <span class="card-meta">nach Themen · 7 Tage</span>
-        </div>
-        <ul class="topics" id="topics"></ul>
-        <div class="ticket-foot">
-          <span><b>107</b> <span class="up">▲ neu</span></span>
-          <span><b>30</b> <span class="down">▼ gelöst</span></span>
-        </div>
-      </section>
-
-    </div>
-  </main>
+  <!-- Mitte: aktuelle Seite -->
+  <main class="main" id="main"></main>
 
   <!-- Rechts: Atlas AI / Webdesign / Templates -->
   <section class="panel">
@@ -116,7 +33,7 @@
           <button class="avatar" id="avatar" aria-label="Konto">?</button>
           <div class="menu" id="menu">
             <div class="menu-email" id="menu-email"></div>
-            <button class="nav-item"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
+            <button class="nav-item" id="menu-settings"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
             <button class="nav-item" id="logout"><i data-lucide="log-out" class="icon"></i>Ausloggen</button>
           </div>
         </div>
@@ -129,7 +46,7 @@
       <button class="rail-btn" data-open="atlas"><i data-lucide="sparkles" class="icon"></i><span>Atlas AI</span></button>
       <button class="rail-btn" data-open="web"><i data-lucide="globe" class="icon"></i><span>Webdesign</span></button>
       <button class="rail-btn" data-open="tpl"><i data-lucide="layout-template" class="icon"></i><span>Templates</span></button>
-      <div class="rail-spacer" id="rail-spacer"></div>
+      <div class="rail-spacer"></div>
     </nav>
 
     <!-- Atlas AI (Nachbau des Layouts von Swiss AI Atlas) -->
@@ -168,7 +85,6 @@
           <button class="at-chat">E-Mail an Steuerberater</button>
           <button class="at-chat">Preiskalkulation Dienstleistung</button>
           <button class="at-chat">Onboarding neuer Mitarbeiter</button>
-          <button class="at-chat">New Chat</button>
         </div>
 
         <div class="at-user">
@@ -195,6 +111,11 @@
             <div class="at-glow"></div>
             <span class="at-hero-mark"><i data-lucide="sparkles" class="icon"></i></span>
             <h2>Worüber möchtest du <em>nachdenken?</em></h2>
+            <div class="at-suggestions">
+              <button class="at-suggest">Welche Rechnungen sind offen?</button>
+              <button class="at-suggest">Wie sieht der Schichtplan aus?</button>
+              <button class="at-suggest">Wie entwickelt sich unsere Liquidität?</button>
+            </div>
           </div>
           <div class="messages" id="messages"></div>
         </div>
@@ -220,216 +141,26 @@
       </div>
     </div>
 
-    <!-- Webdesign -->
-    <div class="tab-body" id="tab-web">
-      <div class="placeholder">
-        <i data-lucide="globe" class="icon" style="width:28px;height:28px"></i>
-        <h2>Webdesign</h2>
-        <p>Website zum Festpreis beauftragen und Hosting im Abo verwalten. Dieser Bereich folgt.</p>
-      </div>
-    </div>
-
-    <!-- Templates -->
-    <div class="tab-body" id="tab-tpl">
-      <div class="placeholder">
-        <i data-lucide="layout-template" class="icon" style="width:28px;height:28px"></i>
-        <h2>Templates</h2>
-        <p>Vorlagen für Rechnungen, AGB, Verträge, Willkommensschreiben, Angebote und mehr. Dieser Bereich folgt.</p>
-      </div>
-    </div>
+    <!-- Webdesign & Templates (per JS befüllt) -->
+    <div class="tab-body" id="tab-web"></div>
+    <div class="tab-body" id="tab-tpl"></div>
   </section>
 
 </div>
 
-<script>
-  /* ---------- Demo-Login ---------- */
-  var email = sessionStorage.getItem('lincomDemoEmail');
-  if (!email) { window.location.href = 'login.html'; }
-  email = email || 'demo@lincom.de';
-
-  var freemail = ['gmail', 'googlemail', 'icloud', 'me', 'gmx', 'web', 'outlook', 'hotmail', 'yahoo', 't-online', 'live', 'posteo', 'mail', 'proton', 'protonmail'];
-  var domain = (email.split('@')[1] || '').split('.')[0];
-  var business = (!domain || freemail.indexOf(domain) !== -1)
-    ? 'deinem Unternehmen'
-    : domain.split('-').map(function (w) { var sp = { gmbh: 'GmbH', ag: 'AG', ug: 'UG', kg: 'KG', ohg: 'OHG', ev: 'e.V.' }; return sp[w] || (w.charAt(0).toUpperCase() + w.slice(1)); }).join(' ');
-  document.getElementById('welcome').textContent = 'Willkommen zurück bei ' + business + '!';
-
-  var initial = email.charAt(0).toUpperCase();
-  document.getElementById('avatar').textContent = initial;
-  document.getElementById('lead-initials').textContent = initial;
-  document.getElementById('menu-email').textContent = email;
-  var local = email.split('@')[0];
-  var parts = local.split(/[._-]/).filter(Boolean);
-  document.getElementById('at-initials').textContent = ((parts[0] || 'D').charAt(0) + (parts[1] ? parts[1].charAt(0) : (parts[0] || 'e').charAt(1) || '')).toUpperCase();
-  document.getElementById('at-username').textContent = local.replace(/[._-]/g, '').toLowerCase();
-  document.getElementById('at-theme').addEventListener('click', function () {
-    document.getElementById('tab-atlas').classList.toggle('atlas-light');
-  });
-
-  document.getElementById('avatar').addEventListener('click', function (e) {
-    e.stopPropagation();
-    document.getElementById('menu').classList.toggle('is-open');
-  });
-  document.addEventListener('click', function () { document.getElementById('menu').classList.remove('is-open'); });
-  document.getElementById('logout').addEventListener('click', function () {
-    sessionStorage.removeItem('lincomDemoEmail');
-    window.location.href = 'index.html';
-  });
-
-  /* ---------- Tabs ---------- */
-  function openTab(name) {
-    document.querySelectorAll('.tab').forEach(function (t) { t.classList.toggle('is-active', t.dataset.tab === name); });
-    document.querySelectorAll('.tab-body').forEach(function (b) { b.classList.toggle('is-active', b.id === 'tab-' + name); });
-  }
-  document.querySelectorAll('.tab').forEach(function (tab) {
-    tab.addEventListener('click', function () { openTab(tab.dataset.tab); });
-  });
-
-  /* ---------- Rechten Bereich ein-/ausklappen ---------- */
-  var appEl = document.querySelector('.app');
-  var avatarWrap = document.getElementById('avatar-wrap');
-  function setCollapsed(collapsed) {
-    appEl.classList.toggle('panel-collapsed', collapsed);
-    document.getElementById('menu').classList.remove('is-open');
-    if (collapsed) document.getElementById('rail').appendChild(avatarWrap);
-    else document.getElementById('panel-actions').appendChild(avatarWrap);
-    try { localStorage.setItem('lincomPanelCollapsed', collapsed ? '1' : '0'); } catch (e) {}
-    setTimeout(function () { if (window.drawChart) drawChart(); }, 280);
-  }
-  document.getElementById('panel-close').addEventListener('click', function () { setCollapsed(true); });
-  document.getElementById('panel-open').addEventListener('click', function () { setCollapsed(false); });
-  document.querySelectorAll('.rail-btn[data-open]').forEach(function (b) {
-    b.addEventListener('click', function () { openTab(b.dataset.open); setCollapsed(false); });
-  });
-
-  /* ---------- Mehr / Weniger ---------- */
-  document.getElementById('more-toggle').addEventListener('click', function () {
-    var extra = document.getElementById('ai-extra');
-    var open = extra.classList.toggle('is-open');
-    document.getElementById('more-label').textContent = open ? 'Weniger' : 'Mehr';
-    var ic = this.querySelector('.at-chev'); if (ic) ic.style.transform = open ? '' : 'rotate(180deg)';
-  });
-
-  /* ---------- Aufgaben ---------- */
-  function updateTasks() {
-    var all = document.querySelectorAll('#tasks .task');
-    var done = document.querySelectorAll('#tasks .task.is-done').length;
-    document.getElementById('task-meta').textContent = done + ' von ' + all.length + ' erledigt';
-  }
-  document.querySelectorAll('#tasks .task').forEach(function (li) {
-    var box = li.querySelector('input');
-    li.addEventListener('click', function (e) {
-      if (e.target !== box) box.checked = !box.checked;
-      li.classList.toggle('is-done', box.checked);
-      updateTasks();
-    });
-  });
-  updateTasks();
-
-  /* ---------- Support-Tickets ---------- */
-  var topics = [
-    ['Rechnungen & Zahlungen', 38],
-    ['Login & Konto', 27],
-    ['Datenexport', 19],
-    ['Integrationen', 14],
-    ['Sonstiges', 9]
-  ];
-  var maxT = topics[0][1];
-  document.getElementById('topics').innerHTML = topics.map(function (t) {
-    return '<li class="topic"><span>' + t[0] + '</span><span class="topic-count">' + t[1] +
-      '</span><span class="topic-bar"><span style="width:' + (t[1] / maxT * 100) + '%"></span></span></li>';
-  }).join('');
-
-  /* ---------- Cashflow-Chart ---------- */
-  var months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep'];
-  var values = [18400, 21200, 19800, 24600, 23100, 27900, 26400, 31200, 34800];
-  var fmt = function (v) { return v.toLocaleString('de-DE') + ' €'; };
-  var last = values[values.length - 1], first = values[0];
-  document.getElementById('cf-kpi').textContent = fmt(last);
-  document.getElementById('cf-sub').textContent = 'Kontostand · +' + Math.round((last - first) / first * 100) + ' % seit Januar';
-
-  var wrap = document.getElementById('cf-chart');
-  var svg = wrap.querySelector('svg');
-  var tip = document.getElementById('cf-tip');
-  var NS = 'http://www.w3.org/2000/svg';
-
-  function drawChart() {
-    var w = wrap.clientWidth, h = wrap.clientHeight;
-    var pad = { l: 4, r: 8, t: 10, b: 20 };
-    var min = Math.min.apply(null, values) * 0.9, max = Math.max.apply(null, values) * 1.05;
-    var x = function (i) { return pad.l + i * (w - pad.l - pad.r) / (values.length - 1); };
-    var y = function (v) { return pad.t + (1 - (v - min) / (max - min)) * (h - pad.t - pad.b); };
-
-    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
-    var pts = values.map(function (v, i) { return x(i) + ',' + y(v); });
-    var html = '';
-    html += '<line x1="0" x2="' + w + '" y1="' + (h - pad.b) + '" y2="' + (h - pad.b) + '" stroke="#e9e9e7"/>';
-    html += '<polygon points="' + x(0) + ',' + (h - pad.b) + ' ' + pts.join(' ') + ' ' + x(values.length - 1) + ',' + (h - pad.b) + '" fill="rgba(35,131,226,0.08)"/>';
-    html += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="#2383e2" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
-    months.forEach(function (m, i) {
-      if (i % 2 === 0) html += '<text x="' + x(i) + '" y="' + (h - 4) + '" font-size="11" fill="rgba(55,53,47,0.45)" text-anchor="' + (i === 0 ? 'start' : i === months.length - 1 ? 'end' : 'middle') + '">' + m + '</text>';
-    });
-    html += '<line id="cf-cross" y1="' + pad.t + '" y2="' + (h - pad.b) + '" stroke="rgba(55,53,47,0.25)" stroke-dasharray="3 3" style="display:none"/>';
-    html += '<circle id="cf-dot" r="4.5" fill="#2383e2" stroke="#fff" stroke-width="2" style="display:none"/>';
-    svg.innerHTML = html;
-
-    var cross = svg.querySelector('#cf-cross'), dot = svg.querySelector('#cf-dot');
-    wrap.onmousemove = function (e) {
-      var rx = e.clientX - wrap.getBoundingClientRect().left;
-      var i = Math.max(0, Math.min(values.length - 1, Math.round((rx - pad.l) / ((w - pad.l - pad.r) / (values.length - 1)))));
-      cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.style.display = '';
-      dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(values[i])); dot.style.display = '';
-      tip.textContent = months[i] + ' 2026 · ' + fmt(values[i]);
-      tip.style.left = Math.max(60, Math.min(w - 60, x(i))) + 'px';
-      tip.style.top = y(values[i]) + 'px';
-      tip.style.opacity = 1;
-    };
-    wrap.onmouseleave = function () { cross.style.display = 'none'; dot.style.display = 'none'; tip.style.opacity = 0; };
-  }
-  drawChart();
-  window.addEventListener('resize', drawChart);
-
-  /* ---------- Atlas-Chat (Demo) ---------- */
-  var composer = document.getElementById('composer');
-  var prompt = document.getElementById('prompt');
-  var messages = document.getElementById('messages');
-
-  function addMsg(text, who) {
-    var d = document.createElement('div');
-    d.className = 'msg ' + who;
-    d.textContent = text;
-    messages.appendChild(d);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  composer.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var text = prompt.value.trim();
-    if (!text) return;
-    document.getElementById('ai-empty').style.display = 'none';
-    messages.classList.add('is-active');
-    addMsg(text, 'user');
-    prompt.value = '';
-    setTimeout(function () {
-      addMsg('Demo-Modus: Atlas ist in dieser Vorschau noch nicht angebunden. Hier erscheinen später die Antworten von Swiss AI.', 'ai');
-    }, 500);
-  });
-  prompt.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); composer.requestSubmit(); }
-  });
-
-  document.getElementById('new-chat').addEventListener('click', function () {
-    messages.innerHTML = '';
-    messages.classList.remove('is-active');
-    document.getElementById('ai-empty').style.display = '';
-    prompt.focus();
-  });
-
-  window.drawChart = drawChart;
-  try { if (localStorage.getItem('lincomPanelCollapsed') === '1') setCollapsed(true); } catch (e) {}
-
-  if (window.lucide) lucide.createIcons();
-</script>
+<script src="js/ui.js"></script>
+<script src="js/store.js"></script>
+<script src="js/views/overview.js"></script>
+<script src="js/views/finance.js"></script>
+<script src="js/views/customers.js"></script>
+<script src="js/views/people.js"></script>
+<script src="js/views/shifts.js"></script>
+<script src="js/views/organisation.js"></script>
+<script src="js/views/admin.js"></script>
+<script src="js/views/settings.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/app.js"></script>
+<script>L.start();</script>
 
 </body>
 </html>
