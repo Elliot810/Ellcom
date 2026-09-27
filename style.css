@@ -386,3 +386,136 @@ ul { margin: 0; padding: 0; list-style: none; }
   .nav { display: none; }
   .section { padding: 52px 0; }
 }
+
+/* Small button variant */
+.btn-small {
+  padding: 9px 18px;
+  font-size: 0.9rem;
+}
+
+/* Auth pages (login) */
+.auth-section {
+  min-height: calc(100vh - 73px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--blue-50) 0%, var(--white) 60%);
+  padding: 40px 24px;
+}
+
+.auth-card {
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.auth-card h1 {
+  color: var(--blue-900);
+  font-size: 1.7rem;
+}
+
+.auth-lead {
+  font-size: 0.95rem;
+  margin: 0 auto 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.auth-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--blue-800);
+  margin-top: 12px;
+}
+
+.auth-form input {
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 8px;
+  font-size: 0.98rem;
+  font-family: inherit;
+  color: var(--ink);
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--blue-500);
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 22px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.auth-note {
+  font-size: 0.85rem;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+
+.auth-back {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--blue-600);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-back:hover { text-decoration: underline; }
+
+/* Dashboard */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-email {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blue-800);
+}
+
+.dashboard-hero {
+  padding-top: 48px;
+  padding-bottom: 32px;
+}
+
+.dashboard-hero h1 {
+  color: var(--blue-900);
+}
+
+.dashboard-tile {
+  position: relative;
+}
+
+.tile-tag {
+  display: inline-block;
+  background: var(--blue-100);
+  color: var(--blue-700);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.tile-desc {
+  font-size: 0.9rem;
+  margin: 0;
+}

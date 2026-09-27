@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard – Lincom</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Lincom</a>
+    <div class="header-user">
+      <span id="user-email" class="user-email"></span>
+      <button id="logout-btn" class="btn btn-ghost btn-small">Ausloggen</button>
+    </div>
+  </div>
+</header>
+
+<section class="section dashboard-hero">
+  <div class="container">
+    <span class="badge">Demo-Modus · keine echten Daten</span>
+    <h1 id="welcome-heading">Willkommen zurück</h1>
+    <p class="lead">Das ist eine Vorschau auf die zukünftige Unternehmenszentrale. Die Module unten sind noch nicht mit echten Daten verbunden.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="module-grid">
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Finanzen &amp; Liquidität</h3>
+        <p class="tile-desc">Einnahmen, Ausgaben, Rechnungen und Cashflow im Überblick.</p>
+      </div>
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Bürokratie &amp; Verwaltung</h3>
+        <p class="tile-desc">Verträge, AGB, Fristen und Behördenkommunikation.</p>
+      </div>
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Organisation</h3>
+        <p class="tile-desc">Aufgaben, Termine und Projekte an einem Ort.</p>
+      </div>
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Kunden &amp; Vertrieb</h3>
+        <p class="tile-desc">CRM, Angebote und Kundenhistorie.</p>
+      </div>
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Operatives Geschäft</h3>
+        <p class="tile-desc">Lager, Bestellungen und Zeiterfassung.</p>
+      </div>
+      <div class="module-card dashboard-tile">
+        <span class="tile-tag">Bald verfügbar</span>
+        <h3>Templates</h3>
+        <p class="tile-desc">Vorlagen für Rechnungen, Verträge und mehr.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  var email = sessionStorage.getItem('lincomDemoEmail');
+  if (!email) {
+    window.location.href = 'login.html';
+  } else {
+    document.getElementById('user-email').textContent = email;
+    document.getElementById('welcome-heading').textContent = 'Willkommen zurück, ' + email.split('@')[0];
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    sessionStorage.removeItem('lincomDemoEmail');
+    window.location.href = 'index.html';
+  });
+</script>
+
+</body>
+</html>
