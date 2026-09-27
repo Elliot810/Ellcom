@@ -120,50 +120,91 @@
       </div>
     </div>
 
-    <!-- Atlas AI -->
-    <div class="tab-body is-active" id="tab-atlas">
-      <nav class="ai-side">
-        <div class="ai-side-head"><i data-lucide="sparkles" class="icon"></i>Swiss AI</div>
-        <button class="nav-item" id="new-chat"><i data-lucide="square-pen" class="icon"></i>Neuer Chat</button>
-        <button class="nav-item"><i data-lucide="inbox" class="icon"></i>Inbox</button>
-        <div class="ai-extra" id="ai-extra">
-          <button class="nav-item"><i data-lucide="languages" class="icon"></i>Übersetzer</button>
-          <button class="nav-item"><i data-lucide="book-open" class="icon"></i>Wissen</button>
-          <button class="nav-item"><i data-lucide="message-square" class="icon"></i>Nachrichten</button>
-          <button class="nav-item"><i data-lucide="folder" class="icon"></i>Projekte</button>
-          <button class="nav-item"><i data-lucide="workflow" class="icon"></i>Workflows</button>
-          <button class="nav-item"><i data-lucide="bot" class="icon"></i>Agenten</button>
+    <!-- Atlas AI (Nachbau des Layouts von Swiss AI Atlas) -->
+    <div class="tab-body is-active atlas" id="tab-atlas">
+      <nav class="at-side">
+        <div class="at-brand">
+          <span class="at-mark"><i data-lucide="sparkles" class="icon"></i></span>
+          <span>Swiss AI</span>
+          <button class="at-icon-btn at-collapse" aria-label="Seitenleiste einklappen"><i data-lucide="panel-left" class="icon"></i></button>
         </div>
-        <button class="nav-item" id="more-toggle"><i data-lucide="chevron-down" class="icon" id="more-icon"></i><span id="more-label">Mehr</span></button>
 
-        <label class="search"><i data-lucide="search" class="icon"></i><input type="text" placeholder="Suchen"></label>
+        <button class="at-item at-new" id="new-chat"><span class="at-plus"><i data-lucide="plus" class="icon"></i></span>Neue Konversation<kbd>⌘N</kbd></button>
+        <button class="at-item"><i data-lucide="inbox" class="icon"></i>Inbox</button>
+        <button class="at-item" id="more-toggle"><i data-lucide="ellipsis" class="icon"></i><span id="more-label">Weniger</span><i data-lucide="chevron-up" class="icon at-chev"></i></button>
+        <div class="ai-extra is-open" id="ai-extra">
+          <button class="at-item"><i data-lucide="languages" class="icon"></i>Übersetzer</button>
+          <button class="at-item"><i data-lucide="book" class="icon"></i>Wissensdatenbank</button>
+          <button class="at-item"><i data-lucide="newspaper" class="icon"></i>Nachrichten</button>
+          <button class="at-item"><i data-lucide="folder-open" class="icon"></i>Projekte</button>
+          <button class="at-item"><i data-lucide="workflow" class="icon"></i>Workflows</button>
+          <button class="at-item"><i data-lucide="sparkles" class="icon"></i>Agenten</button>
+          <div class="at-label">Anpassen</div>
+          <button class="at-item"><i data-lucide="message-square-text" class="icon"></i>Prompts</button>
+          <button class="at-item"><i data-lucide="plug" class="icon"></i>Konnektoren</button>
+        </div>
 
-        <div class="nav-label">Chats</div>
-        <button class="nav-item chat-item">Chat 1</button>
-        <button class="nav-item chat-item">Chat 2</button>
-        <div class="nav-label">Letzte 7 Tage</div>
-        <button class="nav-item chat-item">Chat 3</button>
-        <button class="nav-item chat-item">Chat 4</button>
-        <button class="nav-item chat-item">Chat 5</button>
+        <div class="at-sep"></div>
+        <label class="at-search"><i data-lucide="search" class="icon"></i><input type="text" placeholder="Suchen..."><kbd>⌘K</kbd></label>
+
+        <div class="at-history">
+          <div class="at-divider"><span>Letzte 7 Tage</span></div>
+          <button class="at-chat">Angebot für Neukunden formulieren</button>
+          <button class="at-chat">Workflow für Rechnungsversand</button>
+          <button class="at-chat">Präsentation Quartalszahlen</button>
+          <button class="at-chat">AGB auf Vollständigkeit prüfen</button>
+          <button class="at-chat">E-Mail an Steuerberater</button>
+          <button class="at-chat">Preiskalkulation Dienstleistung</button>
+          <button class="at-chat">Onboarding neuer Mitarbeiter</button>
+          <button class="at-chat">New Chat</button>
+        </div>
+
+        <div class="at-user">
+          <span class="at-avatar" id="at-initials">?</span>
+          <span class="at-user-text"><b id="at-username"></b><small><i></i>Basic</small></span>
+        </div>
+        <div class="at-bottom">
+          <button class="at-btn"><i data-lucide="layout-grid" class="icon"></i>Entdecken</button>
+          <button class="at-btn"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
+        </div>
       </nav>
 
-      <div class="ai-main">
-        <div class="ai-empty" id="ai-empty">
-          <div class="ai-logo"><i data-lucide="mountain" class="icon"></i></div>
-          <h2>Worüber möchtest du nachdenken?</h2>
-        </div>
-        <div class="messages" id="messages"></div>
-
-        <form class="composer" id="composer">
-          <textarea id="prompt" rows="2" placeholder="Frage Swiss AI etwas …"></textarea>
-          <div class="composer-row">
-            <button type="button" class="icon-btn" aria-label="Anhang"><i data-lucide="plus" class="icon"></i></button>
-            <button type="button" class="chip-btn"><i data-lucide="panels-top-left" class="icon"></i>Canvas</button>
-            <span class="spacer"></span>
-            <button type="button" class="icon-btn" aria-label="Spracheingabe"><i data-lucide="mic" class="icon"></i></button>
-            <button type="submit" class="icon-btn send" aria-label="Senden"><i data-lucide="arrow-up" class="icon"></i></button>
+      <div class="at-main">
+        <header class="at-head">
+          <div>
+            <div class="at-head-title">Neue Konversation</div>
+            <div class="at-head-sub">Bereit für deine erste Frage</div>
           </div>
-        </form>
+          <button class="at-icon-btn at-theme" id="at-theme" aria-label="Hell/Dunkel umschalten"><i data-lucide="sun" class="icon"></i></button>
+        </header>
+
+        <div class="at-body">
+          <div class="at-empty" id="ai-empty">
+            <div class="at-glow"></div>
+            <span class="at-hero-mark"><i data-lucide="sparkles" class="icon"></i></span>
+            <h2>Worüber möchtest du <em>nachdenken?</em></h2>
+          </div>
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="at-foot">
+          <form class="at-composer" id="composer">
+            <textarea id="prompt" rows="1" placeholder="Frage Swiss AI etwas..."></textarea>
+            <div class="at-row">
+              <button type="button" class="at-icon-btn" aria-label="Anhang"><i data-lucide="plus" class="icon"></i></button>
+              <button type="button" class="at-canvas"><i data-lucide="panels-top-left" class="icon"></i>Canvas</button>
+              <span class="spacer"></span>
+              <button type="button" class="at-icon-btn" aria-label="Diktieren"><i data-lucide="mic" class="icon"></i></button>
+              <button type="button" class="at-voice" aria-label="Sprachmodus"><i data-lucide="audio-lines" class="icon"></i></button>
+              <button type="submit" class="at-send" aria-label="Senden"><i data-lucide="arrow-right" class="icon"></i></button>
+            </div>
+          </form>
+          <div class="at-model">
+            <button class="at-model-btn">Atlas <small>1.0</small><i data-lucide="chevron-down" class="icon"></i></button>
+            <span class="at-ring"></span>
+          </div>
+          <p class="at-disclaimer">Atlas 1.0 ist eine KI und kann Fehler machen. Bitte überprüfe wichtige Angaben und die zitierten Quellen.</p>
+        </div>
       </div>
     </div>
 
@@ -205,6 +246,13 @@
   document.getElementById('avatar').textContent = initial;
   document.getElementById('lead-initials').textContent = initial;
   document.getElementById('menu-email').textContent = email;
+  var local = email.split('@')[0];
+  var parts = local.split(/[._-]/).filter(Boolean);
+  document.getElementById('at-initials').textContent = ((parts[0] || 'D').charAt(0) + (parts[1] ? parts[1].charAt(0) : (parts[0] || 'e').charAt(1) || '')).toUpperCase();
+  document.getElementById('at-username').textContent = local.replace(/[._-]/g, '').toLowerCase();
+  document.getElementById('at-theme').addEventListener('click', function () {
+    document.getElementById('tab-atlas').classList.toggle('atlas-light');
+  });
 
   document.getElementById('avatar').addEventListener('click', function (e) {
     e.stopPropagation();
@@ -231,7 +279,7 @@
     var extra = document.getElementById('ai-extra');
     var open = extra.classList.toggle('is-open');
     document.getElementById('more-label').textContent = open ? 'Weniger' : 'Mehr';
-    var ic = this.querySelector('svg, i'); if (ic) ic.style.transform = open ? 'rotate(180deg)' : '';
+    var ic = this.querySelector('.at-chev'); if (ic) ic.style.transform = open ? '' : 'rotate(180deg)';
   });
 
   /* ---------- Aufgaben ---------- */
