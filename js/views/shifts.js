@@ -52,6 +52,9 @@
     var days = []; for (var i = 0; i < 7; i++) days.push(L.add(ws, i));
     var shifts = L.weekShifts(ws);
     var cost = L.weekCost(ws);
+    // Echte App: ohne Planungsrecht nur lesen; Personalkosten nur für Rollen mit Lohneinsicht
+    var ro = !!(L.canWrite && !L.canWrite('schichten'));
+    var showCost = !L.roleIs || L.roleIs(['owner', 'admin', 'hr']);
     var staff = L.shiftStaff().filter(function (e) { return !(e.end && e.end < ws); });
 
     function chip(s) {
@@ -66,43 +69,45 @@
 
     var openRow = '<tr class="open-row"><td class="plan-name"><span class="person"><span class="av av-open" style="--s:22px">' + L.icon('circle-dashed', 'tiny') + '</span><b>Offene Schichten</b></span></td>' + days.map(function (d) {
       var list = shifts.filter(function (s) { return !s.empId && s.date === d; });
-      return '<td class="cell" data-emp="" data-date="' + d + '">' + list.map(chip).join('') + '<button class="cell-add" data-add-date="' + d + '" data-add-emp="">+</button></td>';
+      return '<td class="cell" data-emp="" data-date="' + d + '">' + list.map(chip).join('') + (ro ? '' : '<button class="cell-add" data-add-date="' + d + '" data-add-emp="">+</button>') + '</td>';
     }).join('') + '</tr>';
 
     var rows = staff.map(function (e) {
-      var h = cost.byEmp[e.id] || 0, over = h > e.hoursWeek + 0.01;
-      return '<tr><td class="plan-name"><a class="person" href="#/personal/mitarbeiter/' + e.id + '">' + L.avatar(e) + '<span><b>' + L.h(e.first + ' ' + e.last.charAt(0) + '.') + '</b><span class="plan-hours' + (over ? ' over' : '') + '">' + L.num(h, 1) + ' / ' + e.hoursWeek + ' h</span></span></a></td>' +
+      var h = cost.byEmp[e.id] || 0, over = !!e.hoursWeek && h > e.hoursWeek + 0.01;
+      return '<tr><td class="plan-name"><a class="person" href="#/personal/mitarbeiter/' + e.id + '">' + L.avatar(e) + '<span><b>' + L.h(e.first + ' ' + e.last.charAt(0) + '.') + '</b><span class="plan-hours' + (over ? ' over' : '') + '">' + L.num(h, 1) + (e.hoursWeek ? ' / ' + e.hoursWeek : '') + ' h</span></span></a></td>' +
         days.map(function (d) {
           var list = shifts.filter(function (s) { return s.empId === e.id && s.date === d; });
           var a = L.absenceOn(e.id, d, true);
           var na = L.unavailable(e.id, d), notYet = e.start > d || (e.end && e.end < d);
           var marker = a ? '<span class="cell-note abs-' + ({ Urlaub: 'blue', Krank: 'red', Weiterbildung: 'purple', Sonderurlaub: 'green' }[a.type]) + (a.status === 'beantragt' ? ' pending' : '') + '">' + a.type + (a.status === 'beantragt' ? ' (beantragt)' : '') + '</span>'
             : (notYet ? '<span class="cell-note muted-note">' + (e.start > d ? 'ab ' + L.fds(e.start) : 'ausgeschieden') + '</span>' : (na ? '<span class="cell-note muted-note">nicht verfügbar</span>' : ''));
-          return '<td class="cell' + (d === T ? ' today' : '') + (na || notYet ? ' na' : '') + '" data-emp="' + e.id + '" data-date="' + d + '">' + marker + list.map(chip).join('') + '<button class="cell-add" data-add-date="' + d + '" data-add-emp="' + e.id + '">+</button></td>';
+          return '<td class="cell' + (d === T ? ' today' : '') + (na || notYet ? ' na' : '') + '" data-emp="' + e.id + '" data-date="' + d + '">' + marker + list.map(chip).join('') + (ro ? '' : '<button class="cell-add" data-add-date="' + d + '" data-add-emp="' + e.id + '">+</button>') + '</td>';
         }).join('') + '</tr>';
     }).join('');
 
     var html = '<div class="cal-toolbar"><button class="icon-btn" id="w-prev">' + L.icon('chevron-left') + '</button><b>KW ' + L.kw(ws) + '</b><span class="muted">' + L.fds(ws) + '–' + L.fd(L.add(ws, 6)) + '</span><button class="icon-btn" id="w-next">' + L.icon('chevron-right') + '</button>' +
       (off ? '<button class="btn btn-sm" id="w-now">Aktuelle Woche</button>' : '') + '<span class="spacer"></span>' +
       '<span class="pill">' + L.icon('clock', 'tiny') + L.num(cost.hours, 1) + ' h geplant</span>' +
-      '<a class="pill" href="#/finanzen" title="Fließt in die Liquiditätsprognose">' + L.icon('euro', 'tiny') + L.eur(cost.total, 0) + ' Personalkosten</a>' +
+      (showCost ? '<a class="pill" href="#/finanzen" title="Fließt in die Liquiditätsprognose">' + L.icon('euro', 'tiny') + L.eur(cost.total, 0) + ' Personalkosten</a>' : '') +
       '<span class="pill' + (cost.open ? ' warn' : '') + '">' + L.icon('circle-dashed', 'tiny') + cost.open + ' offen</span>' +
       '<span class="pill' + (cost.conflicts ? ' bad' : '') + '">' + L.icon('triangle-alert', 'tiny') + cost.conflicts + ' Konflikte</span></div>';
     html += '<div class="table-wrap plan-wrap"><table class="plan"><thead>' + head + '</thead><tbody>' + openRow + rows + '</tbody></table></div>';
     html += '<p class="muted small plan-legend">' + AREAS.map(function (a) { return '<span class="shift-dot shift-' + AREA_COLOR[a] + '"></span>' + a; }).join(' ') +
-      ' · Schichten per Drag &amp; Drop zwischen Personen und Tagen verschieben · Klick zum Bearbeiten · Personalkosten inkl. ' + S.settings.agPct + ' % Arbeitgeberanteil, gesetzliche Pausen abgezogen</p>';
+      (ro ? ' · Gesetzliche Pausen sind abgezogen' : ' · Schichten per Drag &amp; Drop zwischen Personen und Tagen verschieben · Klick zum Bearbeiten' + (showCost ? ' · Personalkosten inkl. ' + S.settings.agPct + ' % Arbeitgeberanteil' : '') + ', gesetzliche Pausen abgezogen') + '</p>';
 
     return {
       title: 'Schichtplan', icon: 'calendar-clock', wide: true,
-      actions: '<button class="btn" id="plan-tour">' + L.icon('graduation-cap') + 'Kurze Tour</button><button class="btn" id="copy-w">' + L.icon('copy') + 'Vorwoche übernehmen</button><button class="btn btn-primary" id="add-s">' + L.icon('plus') + 'Schicht</button>',
+      actions: '<button class="btn" id="plan-tour">' + L.icon('graduation-cap') + 'Kurze Tour</button>' + (ro ? '' : '<button class="btn" id="copy-w">' + L.icon('copy') + 'Vorwoche übernehmen</button><button class="btn btn-primary" id="add-s">' + L.icon('plus') + 'Schicht</button>'),
+      desc: ro ? 'Nur lesen: Schichten plant die Dienstplanung. Möchtest du eine Schicht abgeben, nutze die Tauschbörse.' : '',
       html: html,
       mount: function (root, main) {
         root.querySelector('#w-prev').onclick = function () { S.ui.weekOffset = off - 1; L.save(); L.render(); };
         root.querySelector('#w-next').onclick = function () { S.ui.weekOffset = off + 1; L.save(); L.render(); };
         var now = root.querySelector('#w-now'); if (now) now.onclick = function () { S.ui.weekOffset = 0; L.save(); L.render(); };
-        main.querySelector('#add-s').onclick = function () { shiftModal(null, { ws: ws }); };
         main.querySelector('#plan-tour').onclick = function () { if (L.tour) L.tour.start('schicht'); };
         if (L.tour) L.tour.auto('schicht');
+        if (ro) return;
+        main.querySelector('#add-s').onclick = function () { shiftModal(null, { ws: ws }); };
         main.querySelector('#copy-w').onclick = function () {
           var prev = L.weekShifts(L.add(ws, -7));
           if (!prev.length) return L.toast('Die Vorwoche ist leer', 'warn');
@@ -143,6 +148,7 @@
   }
   function swaps() {
     var S = L.S, T = L.todayIso();
+    var ro = !!(L.canWrite && !L.canWrite('schichten'));
     var list = S.swaps.slice().sort(function (a, b) { return a.status === 'offen' ? -1 : 1; });
     var html = list.length ? '<ul class="swap-list">' + list.map(function (w) {
       var s = L.shift(w.shiftId), from = L.emp(w.from), to = w.to ? L.emp(w.to) : null;
@@ -154,7 +160,7 @@
         '<div class="swap-people">' + L.avatar(from) + '<span>' + L.h(from.first) + '</span>' + L.icon('arrow-right', 'tiny') + (to ? L.avatar(to) + '<span>' + L.h(to.first) + '</span>' : '<span class="muted">sucht Ersatz</span>') + '</div>' +
         '<div class="swap-note muted">' + (w.note ? '„' + L.h(w.note) + '“' : '') + '</div>' +
         '<div class="swap-actions">' + L.tag(stTag[0], stTag[1]) +
-        (w.status === 'offen' ? (to ? '' : L.select('pick', [['', 'Ersatz wählen …']].concat(cands.map(function (e) { return [e.id, L.name(e) + ' (verfügbar)']; })), '', 'class="sel-sm" data-pick="' + w.id + '"')) +
+        (w.status === 'offen' && !ro ? (to ? '' : L.select('pick', [['', 'Ersatz wählen …']].concat(cands.map(function (e) { return [e.id, L.name(e) + ' (verfügbar)']; })), '', 'class="sel-sm" data-pick="' + w.id + '"')) +
           '<button class="btn btn-sm" data-no="' + w.id + '">Ablehnen</button><button class="btn btn-sm btn-primary" data-ok="' + w.id + '">Genehmigen</button>' : '') + '</div></li>';
     }).join('') + '</ul>' : L.empty('repeat', 'Keine Tauschanfragen.');
 
@@ -163,7 +169,7 @@
       var c = candidatesFor(s, null);
       return '<li><span class="shift shift-' + AREA_COLOR[s.area] + '"><span class="shift-time">' + s.start + '–' + s.end + '</span><span class="shift-area">' + s.area + '</span></span><span>' + L.WD[L.wdIdx(s.date)] + ' ' + L.fds(s.date) + '</span>' +
         '<span class="muted">' + (c.length ? 'verfügbar: ' + c.slice(0, 3).map(function (e) { return e.first; }).join(', ') : 'niemand verfügbar') + '</span>' +
-        (c.length ? '<button class="btn btn-sm" data-fill="' + s.id + '" data-emp="' + c[0].id + '">An ' + L.h(c[0].first) + ' vergeben</button>' : '') + '</li>';
+        (c.length && !ro ? '<button class="btn btn-sm" data-fill="' + s.id + '" data-emp="' + c[0].id + '">An ' + L.h(c[0].first) + ' vergeben</button>' : '') + '</li>';
     }).join('') + '</ul>' : '<p class="muted">Alle Schichten sind besetzt.</p>');
 
     return {
@@ -185,7 +191,8 @@
         root.querySelectorAll('[data-no]').forEach(function (b) { b.onclick = function () { var w = S.swaps.filter(function (x) { return x.id === b.dataset.no; })[0]; w.status = 'abgelehnt'; L.save(); L.toast('Tausch abgelehnt'); L.render(); }; });
         root.querySelectorAll('[data-fill]').forEach(function (b) { b.onclick = function () { var s = L.shift(b.dataset.fill); s.empId = b.dataset.emp; L.save(); L.toast('Schicht an ' + L.emp(b.dataset.emp).first + ' vergeben'); L.render(); }; });
         main.querySelector('#offer').onclick = function () {
-          var future = S.shifts.filter(function (s) { return s.empId && s.date >= L.todayIso(); }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+          var future = S.shifts.filter(function (s) { return s.empId && s.date >= L.todayIso() && (!ro || s.empId === L.myEmpId); }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+          if (!future.length) return L.toast('Du hast keine kommenden Schichten zum Abgeben', 'warn');
           L.modal({ title: 'Schicht abgeben', submit: 'Anfrage stellen',
             body: L.field('Schicht', L.select('shift', future.map(function (s) { return [s.id, L.WD[L.wdIdx(s.date)] + ' ' + L.fds(s.date) + ' · ' + s.start + '–' + s.end + ' · ' + s.area + ' · ' + L.emp(s.empId).first]; }), future[0] && future[0].id)) +
               L.field('An Kolleg:in (optional)', L.select('to', [['', 'Jeder, der kann']].concat(L.shiftStaff().map(function (e) { return [e.id, L.name(e)]; })), '')) + L.field('Grund', L.input('note', '')),
@@ -200,7 +207,7 @@
     var S = L.S;
     L.modal({
       title: 'Zeit nachtragen', submit: 'Speichern',
-      body: '<div class="grid-2">' + L.field('Mitarbeiter', L.select('emp', L.activeEmployees().map(function (e) { return [e.id, L.name(e)]; }), 'e3')) + L.field('Datum', L.input('date', L.todayIso(), 'type="date"')) + '</div>' +
+      body: '<div class="grid-2">' + L.field('Mitarbeiter', L.select('emp', L.activeEmployees().map(function (e) { return [e.id, L.name(e)]; }), L.myEmpId || 'e3')) + L.field('Datum', L.input('date', L.todayIso(), 'type="date"')) + '</div>' +
         '<div class="grid-3">' + L.field('Beginn', L.input('start', '09:00', 'type="time"')) + L.field('Ende', L.input('end', '17:00', 'type="time"')) + L.field('Pause (Min.)', L.input('pause', '30', 'type="number" min="0" step="5"')) + '</div>' +
         '<div class="grid-2">' + L.field('Kunde', L.select('cust', [['', 'Intern']].concat(S.customers.filter(function (c) { return c.stage === 'Kunde' || c.stage === 'Verhandlung' || c.stage === 'Angebot'; }).map(function (c) { return [c.id, c.name]; })), '')) +
         L.field('Projekt', L.select('proj', [['', '–']].concat(S.projects.map(function (p) { return [p.id, p.name]; })), '')) + '</div>' + L.check('billable', 'Abrechenbar', true),
@@ -217,7 +224,7 @@
     var list = S.time.slice().sort(function (a, b) { return (b.date + b.start).localeCompare(a.date + a.start); });
     var weekH = S.time.filter(function (t) { return t.date >= ws; }).reduce(function (s, t) { return s + L.entryHours(t); }, 0);
     var byCust = {};
-    L.unbilled().forEach(function (t) { if (t.customerId) byCust[t.customerId] = (byCust[t.customerId] || 0) + L.entryHours(t); });
+    L.unbilled().forEach(function (t) { if (t.customerId && L.cust(t.customerId)) byCust[t.customerId] = (byCust[t.customerId] || 0) + L.entryHours(t); });
     var clk = S.clock;
 
     var clock = '<section class="card card-flat clock"><div class="card-head"><span class="card-title">' + L.icon('timer') + 'Stempeluhr</span>' + (clk ? L.tag('läuft', 'green') : '') + '</div>';
@@ -226,7 +233,7 @@
       clock += '<div class="clock-run"><div class="clock-time" id="clock-time">00:00:00</div><div class="muted">' + L.h(L.name(e)) + (c ? ' · ' + L.h(c.name) : ' · intern') + ' · seit ' + clk.start + ' Uhr</div>' +
         '<button class="btn btn-danger btn-lg" id="clock-stop">' + L.icon('square') + 'Ausstempeln</button></div>';
     } else {
-      clock += '<div class="grid-2">' + L.field('Mitarbeiter', L.select('cemp', L.activeEmployees().map(function (e) { return [e.id, L.name(e)]; }), 'e3', 'id="c-emp"')) +
+      clock += '<div class="grid-2">' + L.field('Mitarbeiter', L.select('cemp', L.activeEmployees().map(function (e) { return [e.id, L.name(e)]; }), L.myEmpId || 'e3', 'id="c-emp"')) +
         L.field('Kunde (optional)', L.select('ccust', [['', 'Intern']].concat(S.customers.filter(function (c) { return c.stage === 'Kunde'; }).map(function (c) { return [c.id, c.name]; })), '', 'id="c-cust"')) + '</div>' +
         '<button class="btn btn-primary btn-lg" id="clock-start">' + L.icon('play') + 'Einstempeln</button>';
     }

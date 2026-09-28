@@ -25,8 +25,9 @@
   /* ---------- Seitenleiste ---------- */
   function renderSidebar(r) {
     var c = L.counts();
-    var html = '<a href="#/uebersicht" class="brand"><span class="brand-mark">L</span><span class="brand-name">' + L.h(L.company()) + '</span></a>';
+    var html = L.sidebarBrand ? L.sidebarBrand() : '<a href="#/uebersicht" class="brand"><span class="brand-mark">L</span><span class="brand-name">' + L.h(L.company()) + '</span></a>';
     html += '<a href="#/uebersicht" class="nav-item' + (r.area === 'uebersicht' ? ' is-active' : '') + '">' + L.icon('layout-dashboard') + '<span>Übersicht</span></a>';
+    if (L.sidebarTop) html += L.sidebarTop(r);
     html += '<div class="nav-label">Bereiche</div>';
     L.NAV.forEach(function (n) {
       if (!L.on(n.key)) return;
@@ -42,10 +43,13 @@
         html += '</div>';
       }
     });
-    var off = L.NAV.filter(function (n) { return !L.on(n.key); }).length;
-    html += '<a href="#/einstellungen/module" class="nav-item nav-muted">' + L.icon('blocks') + '<span>Module verwalten</span>' + (off ? '<span class="nav-count muted">+' + off + '</span>' : '') + '</a>';
-    html += '<div class="sidebar-bottom"><a href="#/einstellungen" class="nav-item' + (r.area === 'einstellungen' && r.sub !== 'module' ? ' is-active' : '') + '">' + L.icon('settings') + '<span>Einstellungen</span></a></div>';
+    var off = L.NAV.filter(function (n) { return L.S.modules && L.S.modules[n.key] === false; }).length;
+    if (!L.canAdmin || L.canAdmin())
+      html += '<a href="#/einstellungen/module" class="nav-item nav-muted">' + L.icon('blocks') + '<span>Module verwalten</span>' + (off ? '<span class="nav-count muted">+' + off + '</span>' : '') + '</a>';
+    if (L.sidebarExtra) html += L.sidebarExtra(r);
+    html += L.sidebarBottom ? L.sidebarBottom(r) : '<div class="sidebar-bottom"><a href="#/einstellungen" class="nav-item' + (r.area === 'einstellungen' && r.sub !== 'module' ? ' is-active' : '') + '">' + L.icon('settings') + '<span>Einstellungen</span></a></div>';
     document.getElementById('sidebar').innerHTML = html;
+    if (L.afterSidebar) L.afterSidebar();
   }
 
   /* ---------- Seite ---------- */
@@ -73,7 +77,7 @@
 
     var html = '<div class="topbar"><button class="icon-btn menu-btn" id="menu-btn" aria-label="Menü">' + L.icon('menu') + '</button>' +
       '<nav class="crumbs">' + crumbs.join('<span class="crumb-sep">/</span>') + '</nav><span class="spacer"></span>' +
-      '<span class="topbar-note">' + L.icon('flask-conical') + 'Demo · Beispieldaten</span>' +
+      (L.topbarNote ? L.topbarNote() : '<span class="topbar-note">' + L.icon('flask-conical') + 'Demo · Beispieldaten</span>') +
       '<button class="topbar-btn" id="tour-btn" title="Einführung starten">' + L.icon('graduation-cap') + '<span>Einführung</span></button></div>';
     html += '<div class="page' + (page.wide ? ' page-wide' : '') + '">';
     if (page.pre) html += page.pre;
@@ -112,6 +116,10 @@
     if (!email) { window.location.href = 'login.html'; return; }
     L.email = email;
     L.load();
+    L.boot();
+  };
+  // Gemeinsamer Start für Demo und echte App (Daten liegen bereits in L.S)
+  L.boot = function () {
     if (L.initPanel) L.initPanel();
     window.addEventListener('hashchange', L.render);
     document.getElementById('sidebar-backdrop').addEventListener('click', function () { document.querySelector('.app').classList.remove('sidebar-open'); });

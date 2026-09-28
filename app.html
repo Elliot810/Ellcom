@@ -13,19 +13,163 @@
 </head>
 <body>
 
-<div class="app app-real" id="app" hidden>
+<div class="app" id="app" hidden>
+
+  <!-- Linke Seitenleiste (wird per JS befüllt) -->
   <aside class="sidebar" id="sidebar"></aside>
   <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- Mitte: aktuelle Seite -->
   <main class="main" id="main"></main>
+
+  <!-- Rechts: Atlas AI / Webdesign / Templates -->
+  <section class="panel">
+    <div class="panel-top">
+      <button class="tab is-active" data-tab="atlas">Atlas AI</button>
+      <button class="tab" data-tab="web">Webdesign</button>
+      <button class="tab" data-tab="tpl">Templates</button>
+      <div class="panel-actions" id="panel-actions">
+        <button class="panel-collapse" id="panel-close" title="Bereich einklappen" aria-label="Bereich einklappen"><i data-lucide="panel-right-close" class="icon"></i></button>
+        <div class="avatar-wrap" id="avatar-wrap">
+          <button class="avatar" id="avatar" aria-label="Konto">?</button>
+          <div class="menu" id="menu">
+            <div class="menu-email" id="menu-email"></div>
+            <button class="nav-item" id="menu-settings"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
+            <button class="nav-item" id="menu-tour"><i data-lucide="graduation-cap" class="icon"></i>Einführung starten</button>
+            <button class="nav-item" id="logout"><i data-lucide="log-out" class="icon"></i>Ausloggen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eingeklappte Leiste -->
+    <nav class="rail" id="rail" aria-label="Werkzeuge">
+      <button class="rail-btn rail-open" id="panel-open" title="Bereich ausklappen" aria-label="Bereich ausklappen"><i data-lucide="panel-right-open" class="icon"></i></button>
+      <button class="rail-btn" data-open="atlas"><i data-lucide="sparkles" class="icon"></i><span>Atlas AI</span></button>
+      <button class="rail-btn" data-open="web"><i data-lucide="globe" class="icon"></i><span>Webdesign</span></button>
+      <button class="rail-btn" data-open="tpl"><i data-lucide="layout-template" class="icon"></i><span>Templates</span></button>
+      <div class="rail-spacer"></div>
+    </nav>
+
+    <!-- Atlas AI (Nachbau des Layouts von Swiss AI Atlas) -->
+    <div class="tab-body is-active atlas" id="tab-atlas">
+      <nav class="at-side">
+        <div class="at-brand">
+          <span class="at-mark"><i data-lucide="sparkles" class="icon"></i></span>
+          <span>Swiss AI</span>
+          <button class="at-icon-btn at-collapse" aria-label="Seitenleiste einklappen"><i data-lucide="panel-left" class="icon"></i></button>
+        </div>
+
+        <button class="at-item at-new" id="new-chat"><span class="at-plus"><i data-lucide="plus" class="icon"></i></span>Neue Konversation<kbd>⌘N</kbd></button>
+        <button class="at-item"><i data-lucide="inbox" class="icon"></i>Inbox</button>
+        <button class="at-item" id="more-toggle"><i data-lucide="ellipsis" class="icon"></i><span id="more-label">Weniger</span><i data-lucide="chevron-up" class="icon at-chev"></i></button>
+        <div class="ai-extra is-open" id="ai-extra">
+          <button class="at-item"><i data-lucide="languages" class="icon"></i>Übersetzer</button>
+          <button class="at-item"><i data-lucide="book" class="icon"></i>Wissensdatenbank</button>
+          <button class="at-item"><i data-lucide="newspaper" class="icon"></i>Nachrichten</button>
+          <button class="at-item"><i data-lucide="folder-open" class="icon"></i>Projekte</button>
+          <button class="at-item"><i data-lucide="workflow" class="icon"></i>Workflows</button>
+          <button class="at-item"><i data-lucide="sparkles" class="icon"></i>Agenten</button>
+          <div class="at-label">Anpassen</div>
+          <button class="at-item"><i data-lucide="message-square-text" class="icon"></i>Prompts</button>
+          <button class="at-item"><i data-lucide="plug" class="icon"></i>Konnektoren</button>
+        </div>
+
+        <div class="at-sep"></div>
+        <label class="at-search"><i data-lucide="search" class="icon"></i><input type="text" placeholder="Suchen..."><kbd>⌘K</kbd></label>
+
+        <div class="at-history">
+          <div class="at-divider"><span>Letzte 7 Tage</span></div>
+          <button class="at-chat">Angebot für Neukunden formulieren</button>
+          <button class="at-chat">Workflow für Rechnungsversand</button>
+          <button class="at-chat">Präsentation Quartalszahlen</button>
+          <button class="at-chat">AGB auf Vollständigkeit prüfen</button>
+          <button class="at-chat">E-Mail an Steuerberater</button>
+          <button class="at-chat">Preiskalkulation Dienstleistung</button>
+          <button class="at-chat">Onboarding neuer Mitarbeiter</button>
+        </div>
+
+        <div class="at-user">
+          <span class="at-avatar" id="at-initials">?</span>
+          <span class="at-user-text"><b id="at-username"></b><small><i></i>Basic</small></span>
+        </div>
+        <div class="at-bottom">
+          <button class="at-btn"><i data-lucide="layout-grid" class="icon"></i>Entdecken</button>
+          <button class="at-btn"><i data-lucide="settings" class="icon"></i>Einstellungen</button>
+        </div>
+      </nav>
+
+      <div class="at-main">
+        <header class="at-head">
+          <div>
+            <div class="at-head-title">Neue Konversation</div>
+            <div class="at-head-sub">Bereit für deine erste Frage</div>
+          </div>
+          <button class="at-icon-btn at-theme" id="at-theme" aria-label="Hell/Dunkel umschalten"><i data-lucide="sun" class="icon"></i></button>
+        </header>
+
+        <div class="at-body">
+          <div class="at-empty" id="ai-empty">
+            <div class="at-glow"></div>
+            <span class="at-hero-mark"><i data-lucide="sparkles" class="icon"></i></span>
+            <h2>Worüber möchtest du <em>nachdenken?</em></h2>
+            <div class="at-suggestions">
+              <button class="at-suggest">Welche Rechnungen sind offen?</button>
+              <button class="at-suggest">Wie sieht der Schichtplan aus?</button>
+              <button class="at-suggest">Wie entwickelt sich unsere Liquidität?</button>
+            </div>
+          </div>
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="at-foot">
+          <form class="at-composer" id="composer">
+            <textarea id="prompt" rows="1" placeholder="Frage Swiss AI etwas..."></textarea>
+            <div class="at-row">
+              <button type="button" class="at-icon-btn" aria-label="Anhang"><i data-lucide="plus" class="icon"></i></button>
+              <button type="button" class="at-canvas"><i data-lucide="panels-top-left" class="icon"></i>Canvas</button>
+              <span class="spacer"></span>
+              <button type="button" class="at-icon-btn" aria-label="Diktieren"><i data-lucide="mic" class="icon"></i></button>
+              <button type="button" class="at-voice" aria-label="Sprachmodus"><i data-lucide="audio-lines" class="icon"></i></button>
+              <button type="submit" class="at-send" aria-label="Senden"><i data-lucide="arrow-right" class="icon"></i></button>
+            </div>
+          </form>
+          <div class="at-model">
+            <button class="at-model-btn">Atlas <small>1.0</small><i data-lucide="chevron-down" class="icon"></i></button>
+            <span class="at-ring"></span>
+          </div>
+          <p class="at-disclaimer">Atlas 1.0 ist eine KI und kann Fehler machen. Bitte überprüfe wichtige Angaben und die zitierten Quellen.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Webdesign & Templates (per JS befüllt) -->
+    <div class="tab-body" id="tab-web"></div>
+    <div class="tab-body" id="tab-tpl"></div>
+  </section>
+
 </div>
 
 <!-- Ohne Firma: Firma anlegen oder beitreten -->
 <div class="rw-onboard" id="onboard" hidden></div>
-
 <div class="rw-loading" id="loading"><span class="brand-mark">L</span><span>Lincom wird geladen …</span></div>
 
 <script src="js/config.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/store.js"></script>
+<script src="js/views/overview.js"></script>
+<script src="js/views/finance.js"></script>
+<script src="js/views/customers.js"></script>
+<script src="js/views/people.js"></script>
+<script src="js/views/shifts.js"></script>
+<script src="js/views/organisation.js"></script>
+<script src="js/views/admin.js"></script>
+<script src="js/views/settings.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/tour.js"></script>
+<script src="js/app.js"></script>
+<script src="js/real/remote.js"></script>
 <script src="js/real/app.js"></script>
+
 </body>
 </html>

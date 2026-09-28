@@ -142,6 +142,15 @@
       var fs = S.deadlines.filter(function (x) { return !x.done && x.date >= T; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; }).slice(0, 3);
       return 'Nächste Fristen: ' + fs.map(function (x) { return x.title + ' am ' + L.fd(x.date); }).join('; ') + '.';
     }
+    if (L.S.real) {
+      var topics = [];
+      if (L.on('finanzen')) topics.push('offenen Rechnungen', 'der Liquidität');
+      if (L.on('personal')) topics.push('Abwesenheiten');
+      if (L.on('schichten')) topics.push('dem Schichtplan');
+      if (L.on('organisation')) topics.push('Aufgaben');
+      if (L.on('verwaltung')) topics.push('Fristen');
+      return 'Ich antworte mit den Daten deiner Firma – so weit deine Rolle sie sehen darf. Frag mich zum Beispiel nach ' + (topics.length > 1 ? topics.slice(0, -1).join(', ') + ' oder ' + topics[topics.length - 1] : topics[0] || 'deinen Schichten') + '. Die Anbindung an die echte Atlas-KI folgt.';
+    }
     return 'In dieser Demo antworte ich mit Daten aus deinem Lincom-Konto. Frag mich zum Beispiel nach offenen Rechnungen, Abwesenheiten, dem Schichtplan, der Liquidität, Aufgaben oder Fristen. Die echte Anbindung an Atlas folgt.';
   };
 
@@ -163,8 +172,8 @@
 
     document.getElementById('avatar').addEventListener('click', function (e) { e.stopPropagation(); document.getElementById('menu').classList.toggle('is-open'); });
     document.addEventListener('click', function () { document.getElementById('menu').classList.remove('is-open'); });
-    document.getElementById('logout').addEventListener('click', function () { sessionStorage.removeItem('lincomDemoEmail'); window.location.href = 'index.html'; });
-    document.getElementById('menu-settings').addEventListener('click', function () { L.go('#/einstellungen'); });
+    document.getElementById('logout').addEventListener('click', function () { if (L.logout) return L.logout(); sessionStorage.removeItem('lincomDemoEmail'); window.location.href = 'index.html'; });
+    document.getElementById('menu-settings').addEventListener('click', function () { L.go(L.settingsHash || '#/einstellungen'); });
     document.getElementById('menu-tour').addEventListener('click', function () { if (L.tour) L.tour.start(); });
     document.getElementById('at-theme').addEventListener('click', function () { document.getElementById('tab-atlas').classList.toggle('atlas-light'); });
 

@@ -40,7 +40,7 @@
           L.S.onboarding.push({ id: L.uid('o'), empId: e.id, kind: 'Onboarding', date: d.start, tasks: ONBOARD_TASKS.map(function (t) { return { t: t, done: false }; }) });
           var pid = L.uid('p');
           L.S.projects.push({ id: pid, name: 'Onboarding ' + e.first, customerId: null, status: 'Läuft', due: d.start });
-          L.S.tasks.push({ id: L.uid('k'), title: 'Arbeitsvertrag an ' + e.first + ' senden', done: false, prio: 'Hoch', due: L.add(L.todayIso(), 2), projectId: pid, owner: 'e1' });
+          L.S.tasks.push({ id: L.uid('k'), title: 'Arbeitsvertrag an ' + e.first + ' senden', done: false, prio: 'Hoch', due: L.add(L.todayIso(), 2), projectId: pid, owner: L.myEmpId || (L.emp('e1') ? 'e1' : null) });
           made.push('Onboarding');
         }
         if (!d.shift) L.S.availability[e.id] = [0, 1, 2, 3, 4, 5, 6];

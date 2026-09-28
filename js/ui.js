@@ -191,6 +191,7 @@ window.L = window.L || {};
       var pad = { l: 4, r: 8, t: 12, b: 20 };
       var all = actual.concat(forecast || []).filter(function (v) { return v !== null && v !== undefined; });
       var min = Math.min.apply(null, all) * 0.9, max = Math.max.apply(null, all) * 1.06;
+      if (!isFinite(min) || !isFinite(max) || max - min < 1) { var mid = isFinite(max) ? max : 0; min = mid - 1000; max = mid + 1000; } // leere oder flache Daten
       var n = labels.length;
       var x = function (i) { return pad.l + i * (w - pad.l - pad.r) / (n - 1); };
       var y = function (v) { return pad.t + (1 - (v - min) / (max - min)) * (h - pad.t - pad.b); };
