@@ -247,6 +247,8 @@
     return s;
   }
 
+  L.seedData = seed; // wird für „Beispieldaten laden“ in der echten App genutzt
+
   /* ---------- Laden / Speichern ---------- */
   L.load = function () {
     var s = null;
