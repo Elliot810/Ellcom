@@ -3,258 +3,469 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lincom – Die digitale Unternehmenszentrale</title>
-<link rel="stylesheet" href="style.css">
+<title>Lincom – Deine Firma an einem Ort</title>
+<meta name="description" content="Lincom bündelt Finanzen, Kunden, Personal, Schichtplanung und Verwaltung in einer Plattform – mit integrierter KI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="container header-inner">
-    <div class="logo">Lincom</div>
-    <nav class="nav">
-      <a href="#problem">Problem</a>
-      <a href="#loesung">Lösung</a>
-      <a href="#module">Module</a>
-      <a href="#ki">KI</a>
-      <a href="#webseiten">Webseiten</a>
-      <a href="#zielgruppe">Für wen</a>
+<!-- ============ Kopfzeile ============ -->
+<header class="top" id="top">
+  <div class="wrap top-inner">
+    <a href="#" class="brand"><span class="brand-mark">L</span>Lincom</a>
+    <nav class="top-nav" id="top-nav">
+      <a href="#demo">Demo</a>
+      <a href="#personal">Personal</a>
+      <a href="#schichten">Schichtplanung</a>
+      <a href="#verknuepft">Verknüpft</a>
+      <a href="#atlas">Atlas KI</a>
+      <a href="#fuer-wen">Für wen</a>
     </nav>
-    <a href="login.html" class="btn btn-primary btn-small">Login</a>
+    <div class="top-actions">
+      <a href="login.html" class="btn btn-ghost">Anmelden</a>
+      <a href="login.html" class="btn btn-dark">Demo öffnen</a>
+      <button class="icon-btn menu-toggle" id="menu-toggle" aria-label="Menü"><i data-lucide="menu"></i></button>
+    </div>
   </div>
 </header>
 
+<main>
+
+<!-- ============ Hero ============ -->
 <section class="hero">
-  <div class="container hero-inner">
-    <span class="badge">Entwurf · September 2026</span>
-    <h1>Eine Plattform für alles, was Ihr Unternehmen jeden Tag braucht.</h1>
-    <p class="hero-sub">Lincom bündelt Finanzen, Verwaltung, Kunden, Projekte und mehr in einer zentralen digitalen Unternehmenszentrale – für Startups, junge Unternehmen, KMU und Freelancer.</p>
+  <div class="wrap hero-inner">
+    <span class="pill-note"><i data-lucide="sparkles"></i>Neu: Personal &amp; Schichtplanung direkt in Lincom</span>
+    <h1>Deine Firma.<br>Ein Ort.</h1>
+    <p class="hero-sub">Finanzen, Kunden, Personal, Schichtplanung und Bürokratie – in einer ruhigen, übersichtlichen Plattform statt in neun verschiedenen Tools. Mit integrierter KI.</p>
     <div class="hero-cta">
-      <a href="#loesung" class="btn btn-primary">Konzept entdecken</a>
-      <a href="#module" class="btn btn-ghost">Module ansehen</a>
+      <a href="login.html" class="btn btn-primary btn-lg">Demo ausprobieren<i data-lucide="arrow-right"></i></a>
+      <a href="#demo" class="btn btn-lg">So sieht es aus</a>
     </div>
+    <p class="hero-fine">Keine Anmeldung nötig – in der Demo funktioniert jede E-Mail-Adresse.</p>
+  </div>
+
+  <!-- Mini-Demo -->
+  <div class="wrap" id="demo">
+    <div class="demo-tabs" role="tablist" aria-label="Vorschau">
+      <button class="demo-tab is-active" data-screen="ov" role="tab"><i data-lucide="layout-dashboard"></i>Übersicht</button>
+      <button class="demo-tab" data-screen="plan" role="tab"><i data-lucide="calendar-clock"></i>Schichtplan</button>
+      <button class="demo-tab" data-screen="people" role="tab"><i data-lucide="users"></i>Personal</button>
+      <button class="demo-tab" data-screen="fin" role="tab"><i data-lucide="wallet"></i>Finanzen</button>
+      <button class="demo-tab" data-screen="ai" role="tab"><i data-lucide="sparkles"></i>Atlas KI</button>
+    </div>
+
+    <div class="frame">
+      <div class="frame-bar"><span></span><span></span><span></span><div class="frame-url"><i data-lucide="lock"></i>lincom.app<b id="frame-path">/übersicht</b></div></div>
+      <div class="app-mock">
+        <aside class="m-side">
+          <div class="m-brand"><span class="brand-mark sm">L</span>Lincom GmbH</div>
+          <div class="m-nav is-on" data-nav="ov"><i data-lucide="layout-dashboard"></i>Übersicht</div>
+          <div class="m-label">Bereiche</div>
+          <div class="m-nav" data-nav="fin"><i data-lucide="wallet"></i>Finanzen<span class="m-count">1</span></div>
+          <div class="m-nav"><i data-lucide="handshake"></i>Kunden<span class="m-count">4</span></div>
+          <div class="m-nav" data-nav="people"><i data-lucide="users"></i>Personal<span class="m-count">2</span></div>
+          <div class="m-nav" data-nav="plan"><i data-lucide="calendar-clock"></i>Schichtplanung<span class="m-count">6</span></div>
+          <div class="m-nav"><i data-lucide="square-check-big"></i>Organisation</div>
+          <div class="m-nav"><i data-lucide="landmark"></i>Verwaltung<span class="m-count">1</span></div>
+        </aside>
+
+        <div class="m-main">
+          <!-- Übersicht -->
+          <div class="screen is-active" data-screen="ov">
+            <h3 class="m-h">Willkommen zurück bei Lincom GmbH</h3>
+            <div class="m-stats">
+              <div class="m-stat"><span><i data-lucide="calendar-clock"></i>Heute im Dienst</span><b>4 Personen</b><small>Alle Schichten besetzt</small></div>
+              <div class="m-stat"><span><i data-lucide="plane"></i>Abwesend heute</span><b>1 Person</b><small class="t-orange">2 Anträge offen</small></div>
+              <div class="m-stat"><span><i data-lucide="receipt"></i>Offene Rechnungen</span><b>7.183 €</b><small class="t-red">1 überfällig</small></div>
+              <div class="m-stat hide-sm"><span><i data-lucide="alarm-clock"></i>Nächste Frist</span><b>in 3 Tagen</b><small>USt-Voranmeldung</small></div>
+            </div>
+            <div class="m-sub">Braucht deine Aufmerksamkeit</div>
+            <ul class="m-att">
+              <li><i data-lucide="plane"></i><span><b>Jonas K.</b> beantragt Urlaub 05.–09.10. <em class="t-orange">5 Schichten betroffen</em></span><span class="m-btns"><span class="m-btn">Ablehnen</span><span class="m-btn blue">Genehmigen</span></span></li>
+              <li><i data-lucide="timer"></i><span><b>39,3 h</b> für Kiezkraft GmbH erfasst, noch nicht abgerechnet</span><span class="m-btns"><span class="m-btn blue">Rechnung erstellen</span></span></li>
+              <li class="hide-sm"><i data-lucide="repeat"></i><span><b>Paul</b> möchte die Schicht Fr 06:00–14:00 abgeben</span><span class="m-btns"><span class="m-btn">Prüfen</span></span></li>
+            </ul>
+          </div>
+
+          <!-- Schichtplan -->
+          <div class="screen" data-screen="plan">
+            <div class="m-toolbar"><b>KW 40</b><span class="muted">28.09.–04.10.</span><span class="sp"></span><span class="m-pill">169,5 h geplant</span><span class="m-pill">3.567 € Personalkosten</span><span class="m-pill red">1 Konflikt</span></div>
+            <div class="m-plan">
+              <div class="pl-h"></div><div class="pl-h">Mo</div><div class="pl-h">Di</div><div class="pl-h">Mi</div><div class="pl-h">Do</div><div class="pl-h">Fr</div>
+              <div class="pl-n"><span class="av" style="--c:#d9730d">JK</span>Jonas K.<small>37,5 / 40 h</small></div>
+              <div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div>
+              <div class="pl-n"><span class="av" style="--c:#d44c7f">LW</span>Leonie W.<small>22,5 / 25 h</small></div>
+              <div class="pl-c"><span class="sh b">11–19<small>Service</small></span></div><div class="pl-c"><span class="sh b">11–19<small>Service</small></span></div><div class="pl-c"><span class="abs">Urlaub</span></div><div class="pl-c"><span class="abs">Urlaub</span><span class="sh b bad">11–19<small>Service</small></span></div><div class="pl-c"></div>
+              <div class="pl-n"><span class="av" style="--c:#448361">MY</span>Murat Y.<small class="t-orange">45,0 / 40 h</small></div>
+              <div class="pl-c"><span class="sh o">10–18<small>Küche</small></span></div><div class="pl-c"><span class="sh o">10–18<small>Küche</small></span></div><div class="pl-c"><span class="sh o">10–18<small>Küche</small></span></div><div class="pl-c"><span class="sh o">10–18<small>Küche</small></span></div><div class="pl-c na">nicht verfügbar</div>
+              <div class="pl-n"><span class="av" style="--c:#9065b0">SB</span>Sara B.<small>8,5 / 40 h</small></div>
+              <div class="pl-c"></div><div class="pl-c"></div><div class="pl-c"><span class="sh p">14–23<small>Events</small></span></div><div class="pl-c"></div><div class="pl-c"><span class="sh g">06–14<small>Logistik</small></span></div>
+            </div>
+          </div>
+
+          <!-- Personal -->
+          <div class="screen" data-screen="people">
+            <h3 class="m-h">Mitarbeiter</h3>
+            <div class="m-table">
+              <div class="tr th"><span>Name</span><span>Rolle</span><span class="hide-sm">Vertrag</span><span>Urlaub</span><span class="hide-sm">Status</span></div>
+              <div class="tr"><span><span class="av" style="--c:#d9730d">JK</span>Jonas Keller</span><span>Koch</span><span class="hide-sm"><em class="tag blue">Vollzeit</em></span><span>18 / 28 Tage</span><span class="hide-sm"><em class="tag green">Aktiv</em></span></div>
+              <div class="tr"><span><span class="av" style="--c:#d44c7f">LW</span>Leonie Weber</span><span>Service</span><span class="hide-sm"><em class="tag purple">Teilzeit</em></span><span>12 / 25 Tage</span><span class="hide-sm"><em class="tag green">Aktiv</em></span></div>
+              <div class="tr"><span><span class="av" style="--c:#448361">MY</span>Murat Yılmaz</span><span>Koch</span><span class="hide-sm"><em class="tag blue">Vollzeit</em></span><span>20 / 28 Tage</span><span class="hide-sm"><em class="tag red">Krank</em></span></div>
+              <div class="tr"><span><span class="av" style="--c:#337ea9">TR</span>Tim Richter</span><span>Aushilfe</span><span class="hide-sm"><em class="tag yellow">Minijob</em></span><span>6 / 12 Tage</span><span class="hide-sm"><em class="tag green">Aktiv</em></span></div>
+              <div class="tr"><span><span class="av" style="--c:#2a9d8f">NF</span>Nina Frank</span><span>Service</span><span class="hide-sm"><em class="tag purple">Teilzeit</em></span><span>–</span><span class="hide-sm"><em class="tag orange">Onboarding 3/7</em></span></div>
+            </div>
+          </div>
+
+          <!-- Finanzen -->
+          <div class="screen" data-screen="fin">
+            <h3 class="m-h">Liquidität &amp; Prognose</h3>
+            <div class="m-fin">
+              <div class="m-card">
+                <div class="m-card-h">Kontostand <b>34.800 €</b><span class="legend"><i class="ln"></i>Ist <i class="ln dash"></i>Prognose</span></div>
+                <svg class="chart" data-chart="fin" viewBox="0 0 520 180" preserveAspectRatio="none" aria-label="Liquiditätsverlauf mit Prognose"></svg>
+              </div>
+              <div class="m-card hide-sm">
+                <div class="m-card-h">Monat</div>
+                <div class="kv"><span>Umsatz</span><b>31.000 €</b></div>
+                <div class="kv"><span>– Wareneinsatz</span><b>4.650 €</b></div>
+                <div class="kv"><span>– Fixkosten</span><b>4.190 €</b></div>
+                <div class="kv"><span>– Personal <i data-lucide="link"></i></span><b>18.905 €</b></div>
+                <div class="kv total"><span>Ergebnis</span><b class="t-green">3.255 €</b></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Atlas -->
+          <div class="screen" data-screen="ai">
+            <div class="m-ai">
+              <div class="ai-q">Wie sieht der Schichtplan diese Woche aus?</div>
+              <div class="ai-a"><span class="ai-mark"><i data-lucide="sparkles"></i></span><p>KW 40: 169,5 h geplant, 3.567 € Personalkosten inkl. Arbeitgeberanteil. 3 Schichten sind offen, eine hat einen Konflikt – Leonie hat am Donnerstag Urlaub.</p></div>
+              <div class="ai-q">Welche Rechnungen sind offen?</div>
+              <div class="ai-a"><span class="ai-mark"><i data-lucide="sparkles"></i></span><p>4 Rechnungen über 9.892 € brutto. Überfällig: 2026-043 (seit 10 Tagen). Soll ich eine Zahlungserinnerung vorbereiten?</p></div>
+              <div class="ai-input">Frag Atlas etwas …<i data-lucide="arrow-right"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="m-rail hide-sm">
+          <span class="r-btn"><i data-lucide="sparkles"></i>Atlas</span>
+          <span class="r-btn"><i data-lucide="globe"></i>Web</span>
+          <span class="r-btn"><i data-lucide="layout-template"></i>Vorlagen</span>
+        </aside>
+      </div>
+    </div>
+    <p class="demo-caption" id="demo-caption">Die Übersicht sammelt alles, was eine Entscheidung braucht – aus allen Bereichen, mit einem Klick erledigt.</p>
   </div>
 </section>
 
-<section id="problem" class="section section-alt">
-  <div class="container">
-    <span class="eyebrow">Das Problem</span>
-    <h2>Zu viele Systeme, zu wenig Überblick</h2>
-    <p class="lead">Unternehmen müssen heute für viele unterschiedliche Aufgaben unterschiedliche Systeme verwenden.</p>
-    <div class="chain">
-      <span>Rechnungssoftware</span>
-      <span class="arrow">→</span>
-      <span>Excel</span>
-      <span class="arrow">→</span>
-      <span>CRM</span>
-      <span class="arrow">→</span>
-      <span>Kalender</span>
-      <span class="arrow">→</span>
-      <span>Dokumentenablage</span>
-      <span class="arrow">→</span>
-      <span>Behördenportale</span>
-      <span class="arrow">→</span>
-      <span>Steuerinformationen</span>
-      <span class="arrow">→</span>
-      <span>Projektmanagement</span>
-      <span class="arrow">→</span>
-      <span>KI-Tools</span>
-    </div>
-    <p class="problem-note">Gerade junge Unternehmen verlieren dadurch schnell den Überblick.</p>
-  </div>
-</section>
-
-<section id="loesung" class="section">
-  <div class="container">
-    <span class="eyebrow">Die Lösung</span>
-    <h2>Eine zentrale Plattform statt vieler einzelner Tools</h2>
-    <p class="lead">Lincom führt die wichtigsten Bereiche des täglichen Unternehmensalltags in einer einzigen, übersichtlichen Plattform zusammen. Der Nutzer verwaltet möglichst viele wichtige Unternehmensprozesse an einem Ort.</p>
-    <div class="goal-card">
-      <h3>Das Ziel</h3>
-      <p>Aus vielen einzelnen Verwaltungs- und Organisationstools wird eine zentrale digitale Unternehmenszentrale – die Unternehmen von der Gründung über die ersten Kunden bis hin zu einem wachsenden Betrieb begleitet.</p>
-    </div>
-  </div>
-</section>
-
-<section id="module" class="section section-alt">
-  <div class="container">
-    <span class="eyebrow">Die Module</span>
-    <h2>Alle wichtigen Unternehmensbereiche an einem Ort</h2>
-
-    <div class="module-grid">
-      <div class="module-card">
-        <h3>Finanzen &amp; Liquidität</h3>
-        <ul>
-          <li>Einnahmen &amp; Ausgaben</li>
-          <li>Rechnungen &amp; Mahnungen</li>
-          <li>Zahlungs-Tracking, offene Rechnungen</li>
-          <li>Cashflow &amp; Steuer-Rücklagen</li>
-          <li>Preis- und Kostenkalkulation</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Bürokratie &amp; Verwaltung</h3>
-        <ul>
-          <li>Gewerbeanmeldung &amp; Impressum</li>
-          <li>Datenschutz, Verträge, AGB</li>
-          <li>Widerrufsrecht</li>
-          <li>Steuerunterlagen &amp; Fristen</li>
-          <li>Behördenkommunikation</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Organisation</h3>
-        <ul>
-          <li>Aufgaben, Termine, Prioritäten</li>
-          <li>Deadlines</li>
-          <li>Dokumente</li>
-          <li>Projekte</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Kunden &amp; Vertrieb</h3>
-        <ul>
-          <li>CRM &amp; Leads</li>
-          <li>Angebote &amp; Follow-ups</li>
-          <li>Kundenhistorie</li>
-          <li>Wiederkehrende &amp; verlorene Kunden</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Operatives Geschäft</h3>
-        <ul>
-          <li>Lager &amp; Bestellungen</li>
-          <li>Lieferanten &amp; Aufträge</li>
-          <li>Zeiterfassung</li>
-          <li>Mitarbeiter &amp; Material</li>
-          <li>Liefertermine</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Wachstum</h3>
-        <ul>
-          <li>Verantwortlichkeiten</li>
-          <li>Prozesse &amp; SOPs</li>
-          <li>Unternehmenswissen</li>
-          <li>Dokumentation</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Weitere Funktionen</h3>
-        <ul>
-          <li>Gründungsassistent</li>
-          <li>Preisfindungsrechner</li>
-          <li>Fahrtenbuch</li>
-          <li>Inventarverwaltung</li>
-        </ul>
-      </div>
-      <div class="module-card">
-        <h3>Templates &amp; Hosting</h3>
-        <ul>
-          <li>Vorlagen für Rechnungen, AGB, Verträge</li>
-          <li>Willkommensschreiben, Angebote, Follow-ups</li>
-          <li>SOPs &amp; Checklisten</li>
-          <li>Webseiten-Service &amp; Hosting</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="webseiten" class="section">
-  <div class="container two-col">
+<!-- ============ Problem ============ -->
+<section class="band">
+  <div class="wrap problem">
     <div>
-      <span class="eyebrow">Zusatzangebot</span>
-      <h2>Webseiten-Erstellung zum Festpreis</h2>
-      <p class="lead">Lincom bietet zusätzlich einen Webseiten-Erstellungsservice an. Der Kunde teilt lediglich seine Vorstellungen mit – Lincom übernimmt die Erstellung.</p>
-      <ul class="feature-list">
-        <li>Erstellung gegen einen Festpreis</li>
-        <li>Hosting im monatlichen Abo enthalten</li>
-        <li>Kunde muss sich um nichts Technisches kümmern</li>
+      <span class="eyebrow">Das Problem</span>
+      <h2>Neun Tools, null Überblick.</h2>
+      <p class="lead">Rechnungen hier, Dienstplan in Excel, Urlaubsanträge per WhatsApp, Verträge im Ordner. Jedes Tool kennt nur seinen Ausschnitt – den Zusammenhang musst du selbst im Kopf behalten.</p>
+    </div>
+    <div class="scatter" aria-hidden="true">
+      <span class="chip-x" style="--x:4%;--y:6%">Rechnungssoftware</span>
+      <span class="chip-x" style="--x:52%;--y:0%">Excel-Dienstplan</span>
+      <span class="chip-x" style="--x:18%;--y:28%">HR-Tool</span>
+      <span class="chip-x" style="--x:60%;--y:26%">CRM</span>
+      <span class="chip-x" style="--x:0%;--y:52%">Stempeluhr</span>
+      <span class="chip-x" style="--x:40%;--y:48%">Kalender</span>
+      <span class="chip-x" style="--x:66%;--y:56%">Dokumentenordner</span>
+      <span class="chip-x" style="--x:12%;--y:78%">Behördenportale</span>
+      <span class="chip-x" style="--x:50%;--y:80%">KI-Chat</span>
+      <div class="scatter-arrow"><i data-lucide="arrow-down"></i></div>
+      <div class="one"><span class="brand-mark">L</span>Lincom</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Personal ============ -->
+<section class="feature" id="personal">
+  <div class="wrap feat">
+    <div class="feat-text">
+      <span class="eyebrow"><i data-lucide="users"></i>Personal</span>
+      <h2>Vom Bewerber bis zur Personalakte – ohne Zettelwirtschaft.</h2>
+      <p class="lead">Alles rund um dein Team an einem Ort: Personalakte, Urlaub und Krankheit, On- und Offboarding und Recruiting.</p>
+      <ul class="checks">
+        <li><i data-lucide="check"></i><span><b>Digitale Personalakte</b> mit Vertrag, Stunden, Urlaubskonto und Dokumenten</span></li>
+        <li><i data-lucide="check"></i><span><b>Urlaub &amp; Abwesenheiten</b> im Kalender – mit Hinweis, welche Schichten betroffen sind</span></li>
+        <li><i data-lucide="check"></i><span><b>Recruiting per Drag &amp; Drop</b> – „Einstellen“ legt Akte, Vertrag und Onboarding automatisch an</span></li>
+        <li><i data-lucide="check"></i><span><b>Pflichten im Blick</b>, z. B. fehlende Belehrung nach Infektionsschutzgesetz</span></li>
       </ul>
     </div>
-    <div class="mock-browser">
-      <div class="mock-browser-bar">
-        <span></span><span></span><span></span>
+
+    <div class="viz viz-hire">
+      <div class="hire-card">
+        <div class="hc-top"><span class="av lg" style="--c:#b35488">HS</span><div><b>Hanna Schulz</b><small>Bewerbung · Köchin</small></div><em class="tag green">Zusage</em></div>
+        <div class="hc-btn"><i data-lucide="user-check"></i>Einstellen</div>
       </div>
-      <div class="mock-browser-body">
-        <div class="mock-line w-60"></div>
-        <div class="mock-line w-90"></div>
-        <div class="mock-line w-40"></div>
-        <div class="mock-block"></div>
+      <div class="hire-flow" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="hire-results">
+        <div class="hr-item"><i data-lucide="id-card"></i><div><b>Personalakte angelegt</b><small>Vollzeit · 40 h · ab 01.11.</small></div></div>
+        <div class="hr-item"><i data-lucide="file-signature"></i><div><b>Arbeitsvertrag</b><small>Entwurf unter Dokumente</small></div></div>
+        <div class="hr-item"><i data-lucide="list-checks"></i><div><b>Onboarding-Checkliste</b><small><span class="bar"><span style="width:14%"></span></span>1 / 7</small></div></div>
+      </div>
+      <div class="mini-cal">
+        <div class="mc-head"><b>Oktober</b><span class="mc-legend"><i class="dot blue"></i>Urlaub <i class="dot red"></i>Krank</span></div>
+        <div class="mc-row"><span>Jonas</span><div class="mc-days"><i></i><i></i><i></i><i></i><i class="u"></i><i class="u"></i><i class="u"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="mc-row"><span>Leonie</span><div class="mc-days"><i></i><i class="u"></i><i class="u"></i><i class="u"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="mc-row"><span>Murat</span><div class="mc-days"><i class="k"></i><i class="k"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="u p"></i><i class="u p"></i><i></i></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="templates" class="section section-alt">
-  <div class="container">
-    <span class="eyebrow">Templates</span>
-    <h2>Vorlagen für den Unternehmensalltag</h2>
-    <div class="chip-row">
-      <span class="chip">Rechnungen</span>
-      <span class="chip">AGB</span>
-      <span class="chip">Verträge</span>
-      <span class="chip">Willkommensschreiben</span>
-      <span class="chip">Angebote</span>
-      <span class="chip">Follow-ups</span>
-      <span class="chip">SOPs</span>
-      <span class="chip">Checklisten</span>
-    </div>
-  </div>
-</section>
-
-<section id="ki" class="section">
-  <div class="container two-col reverse">
-    <div class="ai-visual">
-      <div class="ai-orb"></div>
-    </div>
-    <div>
-      <span class="eyebrow">Integrierte KI</span>
-      <h2>KI-Unterstützung direkt in Lincom</h2>
-      <p class="lead">Ein besonderes Element der Plattform ist eine integrierte KI auf Basis von <strong>Atlas von Swiss AI Group AG</strong>.</p>
-      <p>Sie unterstützt direkt in Lincom unter anderem bei:</p>
-      <ul class="feature-list">
-        <li>Texten</li>
-        <li>Analysen</li>
-        <li>Finanzberichten</li>
-        <li>Dokumenten &amp; PDFs</li>
-        <li>Unternehmensaufgaben</li>
+<!-- ============ Schichtplanung ============ -->
+<section class="feature alt" id="schichten">
+  <div class="wrap feat reverse">
+    <div class="feat-text">
+      <span class="eyebrow"><i data-lucide="calendar-clock"></i>Schichtplanung &amp; Zeiten</span>
+      <h2>Den Dienstplan in Minuten statt in Stunden.</h2>
+      <p class="lead">Schichten per Drag &amp; Drop verteilen, Konflikte sofort sehen und dabei immer wissen, was die Woche kostet.</p>
+      <ul class="checks">
+        <li><i data-lucide="check"></i><span><b>Wochenplan per Drag &amp; Drop</b> – Vorwoche mit einem Klick übernehmen</span></li>
+        <li><i data-lucide="check"></i><span><b>Konflikte automatisch erkannt</b>: Urlaub, Krankheit, Verfügbarkeit</span></li>
+        <li><i data-lucide="check"></i><span><b>Pausen nach Arbeitszeitgesetz</b> werden automatisch abgezogen</span></li>
+        <li><i data-lucide="check"></i><span><b>Tauschbörse &amp; Stempeluhr</b> – wer einspringen kann, und was wirklich gearbeitet wurde</span></li>
       </ul>
-      <p class="note">Ein wichtiger Teil der Positionierung ist die europäische bzw. schweizerische Ausrichtung und Datenresidenz – ein Aspekt, der für Unternehmen bei der Auswahl von KI-Systemen zunehmend relevant ist.</p>
+    </div>
+
+    <div class="viz viz-plan">
+      <div class="vp-head"><b>KW 40</b><span class="sp"></span><span class="m-pill">3.567 € Personalkosten</span><span class="m-pill red"><i data-lucide="triangle-alert"></i>1 Konflikt</span></div>
+      <div class="vp-grid">
+        <div class="pl-h"></div><div class="pl-h">Mo</div><div class="pl-h">Di</div><div class="pl-h">Mi</div><div class="pl-h">Do</div>
+        <div class="pl-n"><span class="av" style="--c:#d9730d">JK</span>Jonas</div>
+        <div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div><div class="pl-c"></div><div class="pl-c"><span class="sh o">07–15<small>Küche</small></span></div>
+        <div class="pl-n"><span class="av" style="--c:#d44c7f">LW</span>Leonie</div>
+        <div class="pl-c"><span class="sh b">11–19<small>Service</small></span></div><div class="pl-c"></div><div class="pl-c"><span class="abs">Urlaub</span></div><div class="pl-c"><span class="abs">Urlaub</span><span class="sh b bad lifted">11–19<small>Service</small></span></div>
+        <div class="pl-n"><span class="av" style="--c:#9065b0">SB</span>Sara</div>
+        <div class="pl-c na">nicht verfügbar</div><div class="pl-c"></div><div class="pl-c"><span class="sh p">14–23<small>Events</small></span></div><div class="pl-c drop"><div class="drag-chip" aria-hidden="true"><span class="sh b">11–19<small>Service</small></span><i data-lucide="mouse-pointer-2" class="cursor"></i></div></div>
+      </div>
+      <p class="vp-hint"><i data-lucide="mouse-pointer-2"></i>Konflikt lösen: Leonies Schicht einfach auf Sara ziehen.</p>
+      <div class="vp-foot">
+        <div class="swap-card"><i data-lucide="repeat"></i><div><b>Paul</b> gibt Fr 06–14 ab<small>2 Personen könnten einspringen</small></div><span class="m-btn blue">Vergeben</span></div>
+        <div class="clock-card"><i data-lucide="timer"></i><div><b>04:12:37</b><small>Leonie · eingestempelt 07:00</small></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="zielgruppe" class="section section-alt">
-  <div class="container">
-    <span class="eyebrow">Für wen</span>
-    <h2>Gebaut für alle, die ein Unternehmen führen</h2>
-    <div class="target-grid">
-      <div class="target-card">Startups</div>
-      <div class="target-card">Junge Unternehmen</div>
-      <div class="target-card">Neu gegründete Betriebe</div>
-      <div class="target-card">Kleine &amp; mittlere Unternehmen</div>
-      <div class="target-card">Freelancer</div>
+<!-- ============ Verknüpft ============ -->
+<section class="feature" id="verknuepft">
+  <div class="wrap center-head">
+    <span class="eyebrow"><i data-lucide="link"></i>Alles hängt zusammen</span>
+    <h2>Eine Änderung. Überall richtig.</h2>
+    <p class="lead">Einzelne Spezial-Tools wissen nichts voneinander. In Lincom greifen die Bereiche ineinander – ohne Export, ohne doppelte Eingabe.</p>
+  </div>
+  <div class="wrap links">
+    <div class="link-row">
+      <div class="node"><i data-lucide="calendar-clock"></i><b>Schicht verschoben</b><small>Schichtplanung</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node"><i data-lucide="calculator"></i><b>Personalkosten neu</b><small>+ 218 € diese Woche</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node accent"><i data-lucide="trending-up"></i><b>Prognose aktualisiert</b><small>Finanzen</small></div>
+    </div>
+    <div class="link-row">
+      <div class="node"><i data-lucide="timer"></i><b>39,3 h erfasst</b><small>Zeiterfassung</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node"><i data-lucide="receipt"></i><b>Rechnungsentwurf</b><small>mit Stundensatz des Kunden</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node accent"><i data-lucide="square-check-big"></i><b>Aufgabe erledigt</b><small>Organisation</small></div>
+    </div>
+    <div class="link-row">
+      <div class="node"><i data-lucide="plane"></i><b>Urlaub genehmigt</b><small>Personal</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node"><i data-lucide="triangle-alert"></i><b>5 Schichten markiert</b><small>Konflikt im Plan</small></div>
+      <div class="edge"><span></span></div>
+      <div class="node accent"><i data-lucide="repeat"></i><b>Ersatz finden</b><small>Tauschbörse</small></div>
     </div>
   </div>
 </section>
 
-<section class="section concept-section">
-  <div class="container">
-    <h2>Nicht einfach noch ein weiteres Tool</h2>
-    <p class="lead concept-lead">Die langfristige Idee: eine Plattform, die ein Unternehmen von der Gründung bis zum Wachstum begleitet und dabei immer mehr Unternehmensprozesse zentral abbildet.</p>
+<!-- ============ Finanzen & Verwaltung ============ -->
+<section class="feature alt">
+  <div class="wrap duo">
+    <div class="duo-card">
+      <span class="eyebrow"><i data-lucide="wallet"></i>Finanzen &amp; Liquidität</span>
+      <h3>Wissen, wie es in drei Monaten aussieht.</h3>
+      <p>Rechnungen, Ausgaben und eine Liquiditätsprognose, die live aus Umsatz, Fixkosten und Schichtplan rechnet.</p>
+      <div class="duo-viz">
+        <svg class="chart" data-chart="small" viewBox="0 0 520 150" preserveAspectRatio="none" aria-label="Liquiditätsprognose"></svg>
+        <div class="inv-row"><span>2026-043 · Hofmann &amp; Partner</span><em class="tag red">Überfällig</em><b>2.558,50 €</b></div>
+        <div class="inv-row"><span>2026-044 · Kiezkraft GmbH</span><em class="tag blue">Offen</em><b>3.120,00 €</b></div>
+      </div>
+    </div>
+    <div class="duo-card">
+      <span class="eyebrow"><i data-lucide="landmark"></i>Bürokratie &amp; Verwaltung</span>
+      <h3>Keine Frist mehr verpassen.</h3>
+      <p>Umsatzsteuer, Lohnsteuer und Sozialversicherung werden automatisch terminiert – dazu Dokumente, Verträge und ein Pflichten-Check.</p>
+      <div class="duo-viz">
+        <div class="dl"><span class="dl-date"><b>28</b>Sep</span><div><b>Sozialversicherungsbeiträge</b><small>drittletzter Bankarbeitstag</small></div><em class="tag orange">als Nächstes</em></div>
+        <div class="dl"><span class="dl-date"><b>12</b>Okt</span><div><b>Umsatzsteuer-Voranmeldung</b><small>für September</small></div><em class="tag gray">geplant</em></div>
+        <div class="dl"><span class="dl-date"><b>12</b>Okt</span><div><b>Lohnsteuer-Anmeldung</b><small>für September</small></div><em class="tag gray">geplant</em></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="logo">Lincom</div>
-    <p>Entwurf 1 · September 2026</p>
+<!-- ============ Atlas ============ -->
+<section class="feature" id="atlas">
+  <div class="wrap feat">
+    <div class="feat-text">
+      <span class="eyebrow"><i data-lucide="sparkles"></i>Integrierte KI</span>
+      <h2>Frag einfach. Atlas kennt deine Zahlen.</h2>
+      <p class="lead">Die KI-Assistenz auf Basis von <b>Atlas der Swiss AI Group AG</b> sitzt direkt in Lincom – mit europäischer bzw. schweizerischer Datenresidenz.</p>
+      <ul class="checks">
+        <li><i data-lucide="check"></i><span>Antworten aus deinen eigenen Daten: Rechnungen, Schichten, Urlaub, Fristen</span></li>
+        <li><i data-lucide="check"></i><span>Texte, Analysen, Finanzberichte und Dokumente</span></li>
+        <li><i data-lucide="check"></i><span>Erklärt jede Funktion – direkt aus der Einführungstour heraus</span></li>
+      </ul>
+    </div>
+    <div class="viz viz-ai">
+      <div class="ai-q">Wer ist heute abwesend?</div>
+      <div class="ai-a"><span class="ai-mark"><i data-lucide="sparkles"></i></span><p>Heute ist Murat krank gemeldet. Offene Anträge: Jonas 05.–09.10. und Tim 19.–20.10. Jonas' Urlaub würde 5 Schichten betreffen.</p></div>
+      <div class="ai-chips"><span>Welche Rechnungen sind offen?</span><span>Welche Fristen stehen an?</span></div>
+      <div class="ai-input">Frag Atlas etwas …<i data-lucide="arrow-right"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Einfach starten ============ -->
+<section class="feature alt">
+  <div class="wrap feat reverse">
+    <div class="feat-text">
+      <span class="eyebrow"><i data-lucide="graduation-cap"></i>Leicht zu lernen</span>
+      <h2>Eine Einführung, die dir alles zeigt.</h2>
+      <p class="lead">Beim ersten Login führt eine kurze Tour durch jeden Bereich. Unklar? Ein Klick auf „Atlas fragen“ – und die KI erklärt es ausführlicher.</p>
+    </div>
+    <div class="viz viz-tour" aria-hidden="true">
+      <div class="vt-page">
+        <div class="vt-line w40"></div>
+        <div class="vt-tiles"><span></span><span class="hl"><small>Offene Rechnungen</small><b>7.183 €</b></span><span></span></div>
+        <div class="vt-line w90"></div><div class="vt-line w70"></div><div class="vt-line w80"></div>
+      </div>
+      <div class="vt-dim"></div>
+      <div class="vt-pop">
+        <small>Schritt 3 von 19</small>
+        <b>Kennzahlen auf einen Blick</b>
+        <p>Die wichtigsten Zahlen aus allen Modulen. Ein Klick führt direkt in den Bereich.</p>
+        <div class="vt-btns"><span>Zurück</span><span class="sp"></span><span class="b"><i data-lucide="sparkles"></i>Atlas fragen</span><span class="b g">Verstanden!</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Für wen ============ -->
+<section class="feature" id="fuer-wen">
+  <div class="wrap center-head">
+    <span class="eyebrow"><i data-lucide="blocks"></i>Für wen</span>
+    <h2>Nur die Module, die du brauchst.</h2>
+    <p class="lead">Lincom wächst mit: Schalte Bereiche ein, wenn du sie brauchst – deine Daten bleiben erhalten.</p>
+  </div>
+  <div class="wrap presets">
+    <div class="preset">
+      <i data-lucide="user"></i><h3>Freelancer</h3><p>Allein selbstständig</p>
+      <div class="mods"><em class="tag gray">Finanzen</em><em class="tag gray">Kunden</em><em class="tag gray">Organisation</em><em class="tag gray">Verwaltung</em></div>
+    </div>
+    <div class="preset">
+      <i data-lucide="rocket"></i><h3>Startup &amp; Agentur</h3><p>Kleines Team, Projekte</p>
+      <div class="mods"><em class="tag gray">Finanzen</em><em class="tag gray">Kunden</em><em class="tag blue">Personal</em><em class="tag gray">Organisation</em><em class="tag gray">Verwaltung</em></div>
+    </div>
+    <div class="preset featured">
+      <i data-lucide="utensils"></i><h3>Gastro, Handel &amp; Events</h3><p>Team mit Schichtarbeit</p>
+      <div class="mods"><em class="tag gray">Finanzen</em><em class="tag gray">Kunden</em><em class="tag blue">Personal</em><em class="tag orange">Schichtplanung</em><em class="tag gray">Organisation</em><em class="tag gray">Verwaltung</em></div>
+    </div>
+  </div>
+  <div class="wrap extras">
+    <div class="extra"><i data-lucide="globe"></i><div><b>Webseite zum Festpreis</b><p>Du beschreibst deine Wünsche, wir bauen die Seite. Hosting und Änderungen sind im Abo enthalten.</p></div></div>
+    <div class="extra"><i data-lucide="layout-template"></i><div><b>Vorlagen für alles</b><p>Rechnungen, Angebote, Verträge, AGB, Mahnungen und Checklisten – vorausgefüllt mit deinen Daten.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ Abschluss ============ -->
+<section class="final">
+  <div class="wrap final-inner">
+    <h2>Probier es aus – in 10 Sekunden.</h2>
+    <p>Die Demo läuft mit Beispieldaten eines kleinen Event- &amp; Catering-Betriebs. Es wird nichts gespeichert.</p>
+    <a href="login.html" class="btn btn-primary btn-lg">Demo öffnen<i data-lucide="arrow-right"></i></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <a href="#" class="brand"><span class="brand-mark sm">L</span>Lincom</a>
+    <span>Konzept-Demo · 2026 · Keine Rechts- oder Steuerberatung</span>
   </div>
 </footer>
 
+<script>
+(function () {
+  if (window.lucide) lucide.createIcons();
+
+  /* Mobiles Menü */
+  var top = document.getElementById('top');
+  document.getElementById('menu-toggle').addEventListener('click', function () { top.classList.toggle('open'); });
+  document.querySelectorAll('#top-nav a').forEach(function (a) { a.addEventListener('click', function () { top.classList.remove('open'); }); });
+  window.addEventListener('scroll', function () { top.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
+
+  /* Linien-Diagramme (Ist + gestrichelte Prognose) */
+  function drawChart(svg, actual, forecast) {
+    var W = 520, H = svg.viewBox.baseVal.height, pad = 10, all = actual.concat(forecast);
+    var min = Math.min.apply(null, all) * 0.9, max = Math.max.apply(null, all) * 1.05, n = all.length;
+    function x(i) { return pad + i * (W - 2 * pad) / (n - 1); }
+    function y(v) { return H - pad - (v - min) / (max - min) * (H - 2 * pad); }
+    var a = actual.map(function (v, i) { return x(i) + ',' + y(v); });
+    var f = [actual.length - 1].concat(forecast.map(function (_, i) { return actual.length + i; }))
+      .map(function (i) { return x(i) + ',' + y(all[i]); });
+    var grid = '';
+    for (var g = 1; g < 4; g++) grid += '<line x1="0" x2="' + W + '" y1="' + (H * g / 4) + '" y2="' + (H * g / 4) + '" class="c-grid"/>';
+    svg.innerHTML = grid +
+      '<polygon class="c-area" points="' + x(0) + ',' + (H - pad) + ' ' + a.join(' ') + ' ' + x(actual.length - 1) + ',' + (H - pad) + '"/>' +
+      '<polyline class="c-line" points="' + a.join(' ') + '"/>' +
+      '<polyline class="c-line c-dash" points="' + f.join(' ') + '"/>' +
+      '<circle class="c-dot" cx="' + x(actual.length - 1) + '" cy="' + y(actual[actual.length - 1]) + '" r="4"/>';
+  }
+  var act = [18.2, 21.0, 19.6, 24.1, 22.8, 27.0, 25.9, 30.4, 34.8], fc = [37.4, 39.0, 41.8];
+  document.querySelectorAll('svg[data-chart]').forEach(function (s) { drawChart(s, act, fc); });
+
+  /* Mini-Demo: Bildschirme umschalten */
+  var CAP = {
+    ov: ['/übersicht', 'Die Übersicht sammelt alles, was eine Entscheidung braucht – aus allen Bereichen, mit einem Klick erledigt.'],
+    plan: ['/schichtplanung', 'Der Wochenplan zeigt Stunden, Kosten und Konflikte – hier kollidiert Leonies Schicht mit ihrem Urlaub.'],
+    people: ['/personal', 'Die Personalakte kennt Vertrag, Urlaubskonto und Status – inklusive laufendem Onboarding.'],
+    fin: ['/finanzen', 'Die Liquiditätsprognose rechnet live – die Personalkosten kommen direkt aus dem Schichtplan.'],
+    ai: ['/atlas', 'Atlas beantwortet Fragen mit deinen eigenen Daten aus Lincom.']
+  };
+  var tabs = document.querySelectorAll('.demo-tab'), order = ['ov', 'plan', 'people', 'fin', 'ai'], cur = 'ov', auto = true, timer;
+  function show(k) {
+    cur = k;
+    tabs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.screen === k); });
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.toggle('is-active', s.dataset.screen === k); });
+    document.querySelectorAll('.m-nav').forEach(function (n) { n.classList.toggle('is-on', n.dataset.nav === k); });
+    document.getElementById('frame-path').textContent = CAP[k][0];
+    document.getElementById('demo-caption').textContent = CAP[k][1];
+  }
+  tabs.forEach(function (t) { t.addEventListener('click', function () { auto = false; clearInterval(timer); show(t.dataset.screen); }); });
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) timer = setInterval(function () { if (auto) show(order[(order.indexOf(cur) + 1) % order.length]); }, 5000);
+
+  /* Sanftes Einblenden beim Scrollen */
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.feat, .links, .duo, .presets, .extras, .problem, .center-head').forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+  }
+})();
+</script>
 </body>
 </html>
