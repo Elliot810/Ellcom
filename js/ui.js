@@ -154,6 +154,92 @@ window.L = window.L || {};
     return '<label class="check"><input type="checkbox" name="' + name + '"' + (checked ? ' checked' : '') + '><span>' + L.h(label) + '</span></label>';
   };
 
+  /* ---------- Kalender zur Auswahl eines Zeitraums ----------
+     L.rangePicker(el, { from, to, name: ['from','to'], marks: fn(iso) -> 'shift'|'absence'|null,
+                         quick: [[label, from, to]], onChange: fn(from, to) })
+     Erster Klick = Beginn, zweiter Klick = Ende (Vorschau beim Überfahren). */
+  L.rangePicker = function (el, o) {
+    o = o || {};
+    var names = o.name || ['from', 'to'];
+    var st = { from: o.from || L.todayIso(), to: o.to || o.from || L.todayIso(), picking: false, hover: null };
+    var view = L.parse(st.from); view = new Date(view.getFullYear(), view.getMonth(), 1);
+    el.classList.add('rp');
+    el.innerHTML = '<input type="hidden" name="' + names[0] + '"><input type="hidden" name="' + names[1] + '">' +
+      '<div class="rp-head"><button type="button" class="rp-nav" data-d="-1" aria-label="Vorheriger Monat">' + L.icon('chevron-left') + '</button>' +
+      '<span class="rp-title"></span><button type="button" class="rp-nav" data-d="1" aria-label="Nächster Monat">' + L.icon('chevron-right') + '</button></div>' +
+      '<div class="rp-wd">' + L.WD.map(function (w, i) { return '<span' + (i >= 5 ? ' class="we"' : '') + '>' + w + '</span>'; }).join('') + '</div>' +
+      '<div class="rp-grid"></div>' +
+      (o.quick && o.quick.length ? '<div class="rp-quick">' + o.quick.map(function (q, i) { return '<button type="button" class="rp-chip" data-q="' + i + '">' + L.h(q[0]) + '</button>'; }).join('') + '</div>' : '') +
+      '<div class="rp-sum"></div>';
+    var grid = el.querySelector('.rp-grid'), title = el.querySelector('.rp-title'), sum = el.querySelector('.rp-sum');
+    var inFrom = el.querySelector('input[name="' + names[0] + '"]'), inTo = el.querySelector('input[name="' + names[1] + '"]');
+    var T = L.todayIso();
+
+    function range() {
+      var a = st.from, b = st.picking && st.hover ? st.hover : st.to;
+      return a <= b ? [a, b] : [b, a];
+    }
+    function paint() {
+      var r = range();
+      grid.querySelectorAll('.rp-day').forEach(function (c) {
+        var d = c.dataset.d;
+        c.classList.toggle('in', d > r[0] && d < r[1]);
+        c.classList.toggle('start', d === r[0]);
+        c.classList.toggle('end', d === r[1]);
+        c.classList.toggle('single', r[0] === r[1] && d === r[0]);
+        c.classList.toggle('preview', st.picking);
+      });
+      var n = L.workdays(r[0], r[1]), days = Math.round((L.parse(r[1]) - L.parse(r[0])) / 864e5) + 1;
+      sum.innerHTML = '<span class="rp-dates">' + L.WD[L.wdIdx(r[0])] + ', ' + L.fds(r[0]) + (r[0] !== r[1] ? ' – ' + L.WD[L.wdIdx(r[1])] + ', ' + L.fds(r[1]) : '') + '</span>' +
+        '<span class="rp-count">' + (st.picking ? 'Enddatum wählen' : days + (days === 1 ? ' Tag' : ' Tage') + ' · ' + n + (n === 1 ? ' Arbeitstag' : ' Arbeitstage')) + '</span>';
+      inFrom.value = r[0]; inTo.value = r[1];
+    }
+    function draw(dir) {
+      title.textContent = L.MONTHS[view.getMonth()] + ' ' + view.getFullYear();
+      var first = L.iso(view), start = L.add(first, -L.wdIdx(first)), html = '';
+      for (var i = 0; i < 42; i++) {
+        var d = L.add(start, i), dt = L.parse(d), out = dt.getMonth() !== view.getMonth();
+        if (i === 35 && out) break;
+        var m = o.marks ? o.marks(d) : null;
+        html += '<button type="button" class="rp-day' + (out ? ' out' : '') + (L.wdIdx(d) >= 5 ? ' we' : '') + (d === T ? ' today' : '') + '" data-d="' + d + '">' +
+          '<span>' + dt.getDate() + '</span>' + (m ? '<i class="rp-mark m-' + m + '"></i>' : '') + '</button>';
+      }
+      grid.innerHTML = html;
+      if (dir) { grid.classList.remove('slide-l', 'slide-r'); void grid.offsetWidth; grid.classList.add(dir > 0 ? 'slide-l' : 'slide-r'); }
+      paint();
+    }
+    function set(a, b) {
+      st.from = a; st.to = b; st.picking = false; st.hover = null;
+      var v = L.parse(a); if (v.getMonth() !== view.getMonth() || v.getFullYear() !== view.getFullYear()) { view = new Date(v.getFullYear(), v.getMonth(), 1); draw(); } else paint();
+      if (o.onChange) { var r = range(); o.onChange(r[0], r[1]); }
+    }
+    grid.addEventListener('click', function (e) {
+      var c = e.target.closest('.rp-day'); if (!c) return;
+      var d = c.dataset.d;
+      if (!st.picking) { st.from = d; st.to = d; st.picking = true; st.hover = d; paint(); }
+      else { var a = st.from; st.picking = false; st.hover = null; if (d < a) set(d, a); else set(a, d); return; }
+      if (o.onChange) o.onChange(d, d);
+    });
+    grid.addEventListener('mouseover', function (e) {
+      var c = e.target.closest('.rp-day'); if (!c || !st.picking) return;
+      st.hover = c.dataset.d; paint();
+    });
+    el.querySelectorAll('.rp-nav').forEach(function (b) {
+      b.onclick = function () { var dir = Number(b.dataset.d); view = new Date(view.getFullYear(), view.getMonth() + dir, 1); draw(dir); };
+    });
+    el.querySelectorAll('[data-q]').forEach(function (b) {
+      b.onclick = function () { var q = o.quick[Number(b.dataset.q)]; set(q[1], q[2]); };
+    });
+    draw();
+    L.refreshIcons();
+    return { get: function () { return range(); }, set: set, redraw: function () { draw(); } };
+  };
+  // Häufige Schnellauswahlen
+  L.quickRanges = function () {
+    var T = L.todayIso(), ws = L.weekStart(T), nw = L.add(ws, 7);
+    return [['Heute', T, T], ['Morgen', L.add(T, 1), L.add(T, 1)], ['Diese Woche', ws, L.add(ws, 4)], ['Nächste Woche', nw, L.add(nw, 4)]];
+  };
+
   /* ---------- Drag & Drop ---------- */
   L.dnd = function (root, o) {
     var dragged = null;

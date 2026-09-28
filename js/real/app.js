@@ -115,7 +115,7 @@
     $('rw-logout').onclick = L.logout;
   };
   document.addEventListener('click', function () { var m = $('switch-menu'); if (m) m.classList.remove('is-open'); });
-  L.topbarNote = function () { return L.remote.stateHtml() + '<span class="rw-role">' + roleTag(role()) + '</span>'; };
+  L.topbarNote = function () { return L.remote.stateHtml() + '<span class="rw-roletag">' + roleTag(role()) + '</span>'; };
 
   /* ---------- Übersicht / Einstellungen je Rolle ---------- */
   function wrapViews() {
@@ -223,19 +223,43 @@
   };
 
   function absenceModal(e) {
-    var T = L.todayIso();
+    var T = L.todayIso(), S = L.S;
+    var mineShift = {}, mineAbs = {};
+    S.shifts.forEach(function (s) { if (s.empId === e.id) mineShift[s.date] = 1; });
+    S.absences.forEach(function (a) { if (a.empId === e.id && a.status !== 'abgelehnt') for (var d = a.from; d <= a.to; d = L.add(d, 1)) mineAbs[d] = 1; });
+    var vac = e.vacation ? L.vacation(e) : null;
     L.modal({
       title: 'Urlaub beantragen oder Abwesenheit melden', submit: 'Absenden',
-      body: L.field('Art', L.select('type', [['Urlaub', 'Urlaub'], ['Krank', 'Krankmeldung'], ['Sonderurlaub', 'Sonderurlaub'], ['Weiterbildung', 'Weiterbildung']], 'Urlaub')) +
-        '<div class="grid-2">' + L.field('Von', L.input('from', T, 'type="date" required')) + L.field('Bis', L.input('to', T, 'type="date" required')) + '</div>' +
+      body: '<div class="seg" id="abs-type">' + [['Urlaub', 'plane'], ['Krank', 'thermometer'], ['Sonderurlaub', 'gift'], ['Weiterbildung', 'graduation-cap']].map(function (t, i) {
+          return '<label><input type="radio" name="type" value="' + t[0] + '"' + (i === 0 ? ' checked' : '') + '><span>' + L.icon(t[1]) + (t[0] === 'Krank' ? 'Krankmeldung' : t[0]) + '</span></label>';
+        }).join('') + '</div>' +
+        '<div id="abs-rp"></div>' +
+        '<div class="rp-legend"><span><i style="background:#d9730d"></i>deine Schichten</span><span><i style="background:#9065b0"></i>schon eingetragen</span></div>' +
+        '<div class="callout info" id="abs-info"></div>' +
         L.field('Notiz (optional)', L.input('note', '', 'maxlength="200" placeholder="z. B. Familienbesuch"'), 'Die Personalabteilung bestätigt deinen Antrag. Bei Krankheit reiche die AU wie gewohnt nach.'),
+      onMount: function (f) {
+        function info(a, b) {
+          var box = f.querySelector('#abs-info'), type = (f.querySelector('input[name=type]:checked') || {}).value;
+          var n = L.workdays(a, b), clash = Object.keys(mineShift).filter(function (d) { return d >= a && d <= b; }).length;
+          var parts = [n + (n === 1 ? ' Arbeitstag' : ' Arbeitstage')];
+          if (type === 'Urlaub' && vac) parts.push('danach noch ' + (vac.rest - n) + ' Tage Resturlaub');
+          if (clash) parts.push(clash + (clash === 1 ? ' deiner Schichten liegt' : ' deiner Schichten liegen') + ' im Zeitraum');
+          box.className = 'callout ' + (clash || (type === 'Urlaub' && vac && vac.rest - n < 0) ? 'warn' : 'info');
+          box.innerHTML = L.icon(clash ? 'triangle-alert' : 'info') + '<span>' + parts.join(' · ') + '</span>';
+          L.refreshIcons();
+        }
+        var rp = L.rangePicker(f.querySelector('#abs-rp'), {
+          from: T, to: T, quick: L.quickRanges(),
+          marks: function (d) { return mineAbs[d] ? 'absence' : (mineShift[d] ? 'shift' : null); },
+          onChange: info
+        });
+        f.querySelectorAll('input[name=type]').forEach(function (r) { r.onchange = function () { var x = rp.get(); info(x[0], x[1]); }; });
+        info(T, T);
+      },
       onSubmit: function (d) {
-        if (d.to < d.from) { L.toast('„Bis“ liegt vor „Von“', 'warn'); return false; }
         L.S.absences.push({ id: L.uid(), empId: e.id, type: d.type, from: d.from, to: d.to, status: 'beantragt', note: d.note || '' });
         L.save();
-        var clash = L.S.shifts.filter(function (s) { return s.empId === e.id && s.date >= d.from && s.date <= d.to; }).length;
         L.toast(d.type === 'Krank' ? 'Krankmeldung gesendet – gute Besserung!' : 'Antrag gesendet');
-        if (clash) setTimeout(function () { L.toast(clash + ' deiner Schichten liegen im Zeitraum – die Dienstplanung sieht das.', 'warn'); }, 500);
         L.render();
       }
     });

@@ -412,6 +412,23 @@
     return { labels: labels, actual: actual, forecast: fc, parts: { revenue: st.revenue, material: material, fixed: fixed, personnel: pers, net: net }, balance: cf.values[n - 1] };
   };
 
+  /* ---------- Zähler je Unterseite (was ist wo offen?) ---------- */
+  L.subCounts = function () {
+    var T = L.todayIso(), S = L.S, plan = !L.canWrite || L.canWrite('schichten');
+    var r = {
+      finanzen: { rechnungen: S.invoices.filter(function (i) { return L.invStatus(i) === 'Überfällig'; }).length },
+      kunden: { support: S.tickets.filter(function (t) { return !t.done; }).length },
+      personal: { abwesenheiten: S.absences.filter(function (a) { return a.status === 'beantragt'; }).length },
+      schichten: plan ? {
+        plan: S.shifts.filter(function (s) { return !s.empId && s.date >= T && s.date <= L.add(S.anchor, 13); }).length,
+        tausch: S.swaps.filter(function (w) { return w.status === 'offen'; }).length
+      } : {},
+      organisation: { aufgaben: S.tasks.filter(function (t) { return !t.done && t.due && t.due < T; }).length },
+      verwaltung: { fristen: S.deadlines.filter(function (f) { return !f.done && L.days(T, f.date) <= 14 && L.days(T, f.date) >= 0; }).length }
+    };
+    return r;
+  };
+
   /* ---------- Zähler für Navigation ---------- */
   L.counts = function () {
     var T = L.todayIso();

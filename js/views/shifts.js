@@ -8,6 +8,7 @@
   function shiftModal(s, pre) {
     var isNew = !s;
     pre = pre || {};
+    if (isNew) return multiShiftModal(pre);
     var S = L.S, ws = pre.ws || L.S.anchor;
     var dates = []; for (var i = 0; i < 7; i++) { var d = L.add(ws, i); dates.push([d, L.WD[i] + ' ' + L.fds(d)]); }
     if (s && dates.every(function (x) { return x[0] !== s.date; })) dates.push([s.date, L.WD[L.wdIdx(s.date)] + ' ' + L.fds(s.date)]);
@@ -41,6 +42,75 @@
         L.save();
         var c = L.shiftConflict(t);
         L.toast(c ? 'Gespeichert – Achtung: ' + c : (isNew ? 'Schicht hinzugefügt' : 'Schicht gespeichert'), c ? 'warn' : '');
+        L.render();
+      }
+    });
+  }
+
+  /* Neue Schichten: ein oder mehrere Tage auf einmal (z. B. Mo–Fr 07:30–16:00) */
+  function multiShiftModal(pre) {
+    var S = L.S, ws = pre.ws || S.anchor, T = L.todayIso();
+    var from = pre.date || (ws >= L.weekStart(T) ? ws : T), nws = L.add(ws, 7);
+    var staff = [['', '— Offene Schicht —']].concat(L.shiftStaff().map(function (e) { return [e.id, L.name(e)]; }));
+    var defWd = [0, 1, 2, 3, 4]; if (pre.date && L.wdIdx(pre.date) >= 5) defWd.push(L.wdIdx(pre.date));
+    L.modal({
+      title: 'Schichten hinzufügen', submit: 'Hinzufügen', wide: true,
+      body: '<div class="ms-grid"><div>' +
+          '<span class="field-label">Zeitraum</span><div id="sh-rp"></div>' +
+          '<span class="field-label">An diesen Wochentagen</span><div class="wd-pick">' + L.WD.map(function (w, i) {
+            return '<label><input type="checkbox" name="wd' + i + '"' + (defWd.indexOf(i) !== -1 ? ' checked' : '') + '><span>' + w + '</span></label>';
+          }).join('') + '</div>' +
+        '</div><div>' +
+          '<div class="grid-2">' + L.field('Beginn', L.input('start', pre.start || '07:30', 'type="time" required')) + L.field('Ende', L.input('end', pre.end || '16:00', 'type="time" required')) + '</div>' +
+          L.field('Bereich', L.select('area', AREAS, pre.area || 'Service')) +
+          L.field('Besetzt mit', L.select('emp', staff, pre.empId || '')) +
+          '<div id="ms-sum" class="callout info"></div>' +
+        '</div></div>',
+      onMount: function (f) {
+        var rp;
+        function days() {
+          var r = rp.get(), out = [];
+          for (var d = r[0]; d <= r[1] && out.length < 62; d = L.add(d, 1)) if (f['wd' + L.wdIdx(d)].checked) out.push(d);
+          return out;
+        }
+        function check() {
+          var ds = days(), emp = f.emp.value || null, box = f.querySelector('#ms-sum'), btn = f.querySelector('button[type=submit]');
+          var tmpl = { start: f.start.value || '00:00', end: f.end.value || '00:00', area: f.area.value, empId: emp };
+          var h = ds.length ? L.shiftHours(Object.assign({ date: ds[0] }, tmpl)) : 0;
+          var conf = ds.map(function (d) { var c = L.shiftConflict(Object.assign({ date: d }, tmpl)); return c ? L.WD[L.wdIdx(d)] + ' ' + L.fds(d) + ': ' + c : null; }).filter(Boolean);
+          btn.textContent = ds.length > 1 ? ds.length + ' Schichten anlegen' : 'Schicht anlegen';
+          btn.disabled = !ds.length;
+          var rate = emp && L.emp(emp) ? L.emp(emp).rate : 0;
+          box.className = 'callout ' + (!ds.length || conf.length ? 'warn' : 'info');
+          box.innerHTML = L.icon(conf.length || !ds.length ? 'triangle-alert' : 'calendar-check') + '<span class="multi-sum">' +
+            (ds.length ? '<b>' + ds.length + (ds.length === 1 ? ' Schicht' : ' Schichten') + ' · ' + L.num(h * ds.length, 1) + ' h</b>' +
+              '<span>' + L.num(h, 2) + ' h pro Schicht inkl. gesetzlicher Pause' + (rate ? ' · ' + L.eur(h * ds.length * rate, 0) + ' Lohnkosten' : '') + '</span>' : '<b>Keine Tage ausgewählt</b><span>Wähle Zeitraum und Wochentage.</span>') +
+            (conf.length ? '<span>' + conf.length + (conf.length === 1 ? ' Konflikt:' : ' Konflikte:') + '</span><ul>' + conf.slice(0, 4).map(function (c) { return '<li>' + L.h(c) + '</li>'; }).join('') + (conf.length > 4 ? '<li>…</li>' : '') + '</ul>' : '') + '</span>';
+          L.refreshIcons();
+        }
+        rp = L.rangePicker(f.querySelector('#sh-rp'), {
+          from: from, to: pre.date ? pre.date : L.add(ws, 4) >= from ? L.add(ws, 4) : from,
+          quick: [['Diese Woche Mo–Fr', ws, L.add(ws, 4)], ['Ganze Woche', ws, L.add(ws, 6)], ['Nächste Woche Mo–Fr', nws, L.add(nws, 4)]],
+          marks: function (d) { var id = f.emp.value; return id && S.shifts.some(function (x) { return x.empId === id && x.date === d; }) ? 'shift' : null; },
+          onChange: check
+        });
+        if (pre.date) rp.set(pre.date, pre.date);
+        f.querySelectorAll('.wd-pick input, input[name=start], input[name=end], select').forEach(function (x) { x.addEventListener('change', check); });
+        f.emp.addEventListener('change', function () { rp.redraw(); check(); });
+        check();
+        f._days = days;
+      },
+      onSubmit: function (d, f) {
+        var ds = f._days(), n = 0, conf = 0;
+        ds.forEach(function (date) {
+          var dup = S.shifts.some(function (x) { return x.date === date && x.start === d.start && x.area === d.area && x.empId === (d.emp || null); });
+          if (dup) return;
+          var t = { id: L.uid('s'), date: date, start: d.start, end: d.end, area: d.area, empId: d.emp || null };
+          S.shifts.push(t); n++;
+          if (L.shiftConflict(t)) conf++;
+        });
+        L.save();
+        L.toast(n ? (n === 1 ? 'Schicht angelegt' : n + ' Schichten angelegt') + (conf ? ' – ' + conf + ' mit Konflikt' : '') : 'Diese Schichten gibt es schon', conf || !n ? 'warn' : '');
         L.render();
       }
     });

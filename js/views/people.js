@@ -88,9 +88,21 @@
     L.modal({
       title: 'Abwesenheit eintragen', submit: 'Eintragen',
       body: '<div class="grid-2">' + L.field('Mitarbeiter', L.select('emp', emps, pre.empId || emps[0][0])) + L.field('Art', L.select('type', ['Urlaub', 'Krank', 'Weiterbildung', 'Sonderurlaub'], 'Urlaub')) + '</div>' +
-        '<div class="grid-2">' + L.field('Von', L.input('from', pre.from || L.add(L.todayIso(), 7), 'type="date" required')) + L.field('Bis', L.input('to', pre.to || L.add(L.todayIso(), 9), 'type="date" required')) + '</div>' +
+        '<div id="abs-rp"></div><div class="rp-legend"><span><i style="background:#d9730d"></i>Schichten der Person</span><span><i style="background:#9065b0"></i>schon eingetragen</span></div>' +
         L.field('Notiz', L.input('note', '')) + L.check('approve', 'Direkt genehmigen', false) +
         '<p class="muted small">Krankmeldungen werden ohne Genehmigung eingetragen. Betroffene Schichten erscheinen im Schichtplan als Konflikt.</p>',
+      onMount: function (f) {
+        var sel = f.querySelector('select[name=emp]');
+        var rp = L.rangePicker(f.querySelector('#abs-rp'), {
+          from: pre.from || L.add(L.todayIso(), 7), to: pre.to || L.add(L.todayIso(), 9), quick: L.quickRanges(),
+          marks: function (d) {
+            var id = sel.value;
+            if (L.S.absences.some(function (a) { return a.empId === id && a.status !== 'abgelehnt' && a.from <= d && a.to >= d; })) return 'absence';
+            return L.S.shifts.some(function (s) { return s.empId === id && s.date === d; }) ? 'shift' : null;
+          }
+        });
+        sel.addEventListener('change', rp.redraw);
+      },
       onSubmit: function (d) {
         if (d.to < d.from) { L.toast('„Bis“ liegt vor „Von“', 'warn'); return false; }
         var a = { id: L.uid('a'), empId: d.emp, type: d.type, from: d.from, to: d.to, note: d.note, status: d.type === 'Krank' ? 'gemeldet' : (d.approve ? 'genehmigt' : 'beantragt') };

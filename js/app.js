@@ -24,7 +24,8 @@
 
   /* ---------- Seitenleiste ---------- */
   function renderSidebar(r) {
-    var c = L.counts();
+    var sc = L.subCounts(), c = {};
+    Object.keys(sc).forEach(function (k) { c[k] = Object.keys(sc[k]).reduce(function (n, x) { return n + sc[k][x]; }, 0); });
     var html = L.sidebarBrand ? L.sidebarBrand() : '<a href="#/uebersicht" class="brand"><span class="brand-mark">L</span><span class="brand-name">' + L.h(L.company()) + '</span></a>';
     html += '<a href="#/uebersicht" class="nav-item' + (r.area === 'uebersicht' ? ' is-active' : '') + '">' + L.icon('layout-dashboard') + '<span>Übersicht</span></a>';
     if (L.sidebarTop) html += L.sidebarTop(r);
@@ -38,7 +39,8 @@
         html += '<div class="nav-subs">';
         n.subs.forEach(function (s) {
           var on = (r.sub || n.subs[0][0]) === s[0];
-          html += '<a href="#/' + n.key + '/' + s[0] + '" class="nav-sub' + (on ? ' is-active' : '') + '">' + s[1] + '</a>';
+          var k = (sc[n.key] || {})[s[0]];
+          html += '<a href="#/' + n.key + '/' + s[0] + '" class="nav-sub' + (on ? ' is-active' : '') + '"><span>' + s[1] + '</span>' + (k ? '<span class="nav-count">' + k + '</span>' : '') + '</a>';
         });
         html += '</div>';
       }
@@ -88,7 +90,8 @@
     }
     if (def && !page.noTabs) {
       html += '<nav class="view-tabs">' + def.subs.map(function (s) {
-        return '<a href="#/' + def.key + '/' + s[0] + '" class="view-tab' + (s[0] === r.sub ? ' is-active' : '') + '">' + s[1] + '</a>';
+        var k = (L.subCounts()[def.key] || {})[s[0]];
+        return '<a href="#/' + def.key + '/' + s[0] + '" class="view-tab' + (s[0] === r.sub ? ' is-active' : '') + '">' + s[1] + (k ? '<span class="tab-count">' + k + '</span>' : '') + '</a>';
       }).join('') + '</nav>';
     }
     html += '<div class="page-body">' + (page.html || '') + '</div></div>';
