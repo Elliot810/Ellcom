@@ -444,3 +444,26 @@ h2 { font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; font-weight: 700; }
   .drag-chip, .edge span { animation: none; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- Login: echte Anmeldung ---------- */
+.auth-view[hidden] { display: none; }
+.auth-form label { display: flex; align-items: baseline; justify-content: space-between; }
+.auth-inline { font-weight: 500; font-size: 12.5px; color: var(--accent); }
+.auth-form input.invalid { border-color: var(--t-red-i); }
+.auth-msg { min-height: 0; margin: 4px 0 0; font-size: 13.5px; line-height: 1.45; }
+.auth-msg:empty { display: none; }
+.auth-msg.err { color: var(--t-red-i); }
+.auth-msg.ok { color: var(--t-green-i); }
+.auth-foot a { color: var(--accent); font-weight: 500; }
+.auth-demo.ok { background: var(--t-green); color: var(--t-green-i); }
+.auth-small { font-size: 13.5px; color: var(--ink-2); }
+.auth-small a { color: var(--accent); }
+.btn.is-busy { opacity: 0.7; pointer-events: none; }
+.btn.is-busy::after { content: ''; width: 14px; height: 14px; margin-left: 4px; border: 2px solid rgba(255, 255, 255, 0.5); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.auth-demo-link { display: flex; align-items: flex-start; gap: 8px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+.auth-demo-link svg { width: 14px; height: 14px; margin-top: 2px; }
+.auth-demo-link a { color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; }
+.final-cta { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.btn-on-dark { background: transparent; border-color: rgba(255, 255, 255, 0.28); color: #fff; }
+.btn-on-dark:hover { background: rgba(255, 255, 255, 0.08); }

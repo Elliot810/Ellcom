@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lincom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+<div class="app app-real" id="app" hidden>
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+  <main class="main" id="main"></main>
+</div>
+
+<!-- Ohne Firma: Firma anlegen oder beitreten -->
+<div class="rw-onboard" id="onboard" hidden></div>
+
+<div class="rw-loading" id="loading"><span class="brand-mark">L</span><span>Lincom wird geladen …</span></div>
+
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/real/app.js"></script>
+</body>
+</html>

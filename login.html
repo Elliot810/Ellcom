@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -22,31 +23,167 @@
 <main class="auth">
   <div class="auth-card">
     <span class="brand-mark">L</span>
-    <h1>Willkommen bei Lincom</h1>
-    <p>Melde dich an, um die Demo zu öffnen.</p>
-    <div class="auth-demo"><i data-lucide="info"></i><span>Demo-Modus: Jede E-Mail-Adresse und jedes Passwort funktionieren. Es wird nichts gespeichert oder geprüft.</span></div>
 
-    <form id="login-form" class="auth-form">
-      <label for="email">E-Mail-Adresse</label>
-      <input type="email" id="email" name="email" placeholder="name@firma.de" autocomplete="email" required>
-      <label for="password">Passwort</label>
-      <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
-      <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
-    </form>
+    <!-- Anmelden -->
+    <section class="auth-view" data-view="signin">
+      <h1>Willkommen zurück</h1>
+      <p>Melde dich mit deinem Lincom-Konto an.</p>
+      <form class="auth-form" id="f-signin" novalidate>
+        <label for="si-email">E-Mail-Adresse</label>
+        <input type="email" id="si-email" autocomplete="email" placeholder="name@firma.de" required>
+        <label for="si-pass">Passwort <a href="#passwort-vergessen" class="auth-inline" data-go="forgot">Vergessen?</a></label>
+        <input type="password" id="si-pass" autocomplete="current-password" placeholder="••••••••" required>
+        <p class="auth-msg" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
+      </form>
+      <p class="auth-foot">Noch kein Konto? <a href="#registrieren" data-go="signup">Jetzt registrieren</a></p>
+    </section>
 
-    <p class="auth-foot">Noch kein Konto? In der Demo einfach anmelden – ein Konto wird simuliert.</p>
+    <!-- Registrieren -->
+    <section class="auth-view" data-view="signup" hidden>
+      <h1>Konto erstellen</h1>
+      <p>Für Geschäftsführung und Mitarbeitende. Deiner Firma trittst du im nächsten Schritt bei – oder legst sie an.</p>
+      <form class="auth-form" id="f-signup" novalidate>
+        <label for="su-name">Vor- und Nachname</label>
+        <input type="text" id="su-name" autocomplete="name" placeholder="Max Mustermann" maxlength="120" required>
+        <label for="su-email">E-Mail-Adresse</label>
+        <input type="email" id="su-email" autocomplete="email" placeholder="name@firma.de" required>
+        <label for="su-pass">Passwort</label>
+        <input type="password" id="su-pass" autocomplete="new-password" placeholder="Mindestens 8 Zeichen" minlength="8" required>
+        <p class="auth-msg" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Konto erstellen</button>
+      </form>
+      <p class="auth-foot">Schon registriert? <a href="#anmelden" data-go="signin">Anmelden</a></p>
+    </section>
+
+    <!-- Bestätigung -->
+    <section class="auth-view" data-view="check" hidden>
+      <h1>Fast geschafft</h1>
+      <div class="auth-demo ok"><i data-lucide="mail-check"></i><span>Wir haben dir eine E-Mail an <b id="check-mail"></b> geschickt. Klick auf den Link darin, um dein Konto zu bestätigen.</span></div>
+      <p class="auth-small">Keine E-Mail bekommen? Schau im Spam-Ordner nach oder <a href="#" id="resend">sende sie erneut</a>.</p>
+      <p class="auth-foot"><a href="#anmelden" data-go="signin">Zur Anmeldung</a></p>
+    </section>
+
+    <!-- Passwort vergessen -->
+    <section class="auth-view" data-view="forgot" hidden>
+      <h1>Passwort zurücksetzen</h1>
+      <p>Wir schicken dir einen Link, mit dem du ein neues Passwort festlegst.</p>
+      <form class="auth-form" id="f-forgot" novalidate>
+        <label for="fo-email">E-Mail-Adresse</label>
+        <input type="email" id="fo-email" autocomplete="email" placeholder="name@firma.de" required>
+        <p class="auth-msg" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Link senden</button>
+      </form>
+      <p class="auth-foot"><a href="#anmelden" data-go="signin">Zurück zur Anmeldung</a></p>
+    </section>
+
+    <!-- Neues Passwort -->
+    <section class="auth-view" data-view="newpass" hidden>
+      <h1>Neues Passwort</h1>
+      <p>Lege ein neues Passwort für dein Konto fest.</p>
+      <form class="auth-form" id="f-newpass" novalidate>
+        <label for="np-pass">Neues Passwort</label>
+        <input type="password" id="np-pass" autocomplete="new-password" placeholder="Mindestens 8 Zeichen" minlength="8" required>
+        <p class="auth-msg" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Passwort speichern</button>
+      </form>
+    </section>
+
+    <div class="auth-demo-link"><i data-lucide="flask-conical"></i><span>Nur umschauen? <a href="demo.html">Demo mit Beispieldaten öffnen</a> – ohne Konto.</span></div>
   </div>
 </main>
 
+<script src="js/config.js"></script>
 <script>
+(function () {
   if (window.lucide) lucide.createIcons();
-  document.getElementById('login-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var email = document.getElementById('email').value || 'demo@lincom.de';
-    sessionStorage.setItem('lincomDemoEmail', email);
-    window.location.href = 'dashboard.html';
-  });
-</script>
+  var views = document.querySelectorAll('.auth-view'), recovering = false, lastSignup = null;
 
+  function show(name) {
+    views.forEach(function (v) { v.hidden = v.dataset.view !== name; });
+    document.querySelectorAll('.auth-msg').forEach(function (m) { m.textContent = ''; m.className = 'auth-msg'; });
+    var f = document.querySelector('.auth-view[data-view="' + name + '"] input');
+    if (f) setTimeout(function () { f.focus(); }, 30);
+  }
+  function msg(form, text, ok) { var m = form.querySelector('.auth-msg'); m.textContent = text; m.className = 'auth-msg' + (ok ? ' ok' : ' err'); }
+  function busy(form, on) { var b = form.querySelector('button[type=submit]'); b.disabled = on; b.classList.toggle('is-busy', on); }
+  function valid(form) {
+    var bad = Array.prototype.filter.call(form.querySelectorAll('input[required]'), function (i) { return !i.checkValidity(); });
+    form.querySelectorAll('input').forEach(function (i) { i.classList.toggle('invalid', bad.indexOf(i) !== -1); });
+    if (bad.length) {
+      var i = bad[0]; i.focus();
+      msg(form, !i.value.trim() ? 'Bitte fülle alle Felder aus.' : i.type === 'email' ? 'Bitte gib eine gültige E-Mail-Adresse ein.' : 'Das Passwort braucht mindestens 8 Zeichen.');
+      return false;
+    }
+    return true;
+  }
+  function goApp() { location.replace('app.html'); }
+
+  document.querySelectorAll('[data-go]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); show(a.dataset.go); });
+  });
+  var h = location.hash;
+  if (h === '#registrieren') show('signup'); else if (h === '#passwort-vergessen') show('forgot');
+
+  // Passwort-Link aus der E-Mail oder bestehende Sitzung
+  sb.auth.onAuthStateChange(function (event) {
+    if (event === 'PASSWORD_RECOVERY') { recovering = true; show('newpass'); }
+  });
+  sb.auth.getSession().then(function (r) {
+    if (/type=recovery/.test(LINCOM_INITIAL_HASH)) { recovering = true; show('newpass'); return; }
+    if (r.data.session && !recovering) goApp();
+  });
+  var err = new URLSearchParams(LINCOM_INITIAL_HASH.slice(1)).get('error_description');
+  if (err) { show('signin'); msg(document.getElementById('f-signin'), /expired|invalid/i.test(err) ? 'Der Link ist abgelaufen oder wurde schon benutzt. Bitte fordere einen neuen an.' : err); }
+
+  document.getElementById('f-signin').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = this; if (!valid(f)) return; busy(f, true);
+    sb.auth.signInWithPassword({ email: f['si-email'].value.trim(), password: f['si-pass'].value })
+      .then(function (r) { if (r.error) throw r.error; goApp(); })
+      .catch(function (er) { msg(f, lincomError(er)); busy(f, false); });
+  });
+
+  document.getElementById('f-signup').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = this; if (!valid(f)) return; busy(f, true);
+    var email = f['su-email'].value.trim();
+    sb.auth.signUp({ email: email, password: f['su-pass'].value,
+      options: { data: { full_name: f['su-name'].value.trim() }, emailRedirectTo: LINCOM_BASE + 'app.html' } })
+      .then(function (r) {
+        if (r.error) throw r.error;
+        if (r.data.session) return goApp();
+        // Supabase verrät bei bestehender Adresse aus Datenschutzgründen nichts: leere Identitäten = schon registriert
+        if (r.data.user && r.data.user.identities && r.data.user.identities.length === 0) {
+          busy(f, false); return msg(f, 'Für diese E-Mail-Adresse gibt es schon ein Konto. Melde dich an oder setze dein Passwort zurück.');
+        }
+        lastSignup = email; document.getElementById('check-mail').textContent = email; show('check');
+      })
+      .catch(function (er) { msg(f, lincomError(er)); busy(f, false); });
+  });
+
+  document.getElementById('resend').addEventListener('click', function (e) {
+    e.preventDefault(); if (!lastSignup) return show('signin');
+    var a = this; a.textContent = 'wird gesendet …';
+    sb.auth.resend({ type: 'signup', email: lastSignup, options: { emailRedirectTo: LINCOM_BASE + 'app.html' } })
+      .then(function (r) { a.textContent = r.error ? lincomError(r.error) : 'E-Mail erneut gesendet'; });
+  });
+
+  document.getElementById('f-forgot').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = this; if (!valid(f)) return; busy(f, true);
+    sb.auth.resetPasswordForEmail(f['fo-email'].value.trim(), { redirectTo: LINCOM_BASE + 'login.html' })
+      .then(function (r) {
+        if (r.error) throw r.error;
+        msg(f, 'Falls es ein Konto mit dieser Adresse gibt, ist der Link unterwegs. Schau in dein Postfach.', true); busy(f, false);
+      })
+      .catch(function (er) { msg(f, lincomError(er)); busy(f, false); });
+  });
+
+  document.getElementById('f-newpass').addEventListener('submit', function (e) {
+    e.preventDefault(); var f = this; if (!valid(f)) return; busy(f, true);
+    sb.auth.updateUser({ password: f['np-pass'].value })
+      .then(function (r) { if (r.error) throw r.error; msg(f, 'Passwort gespeichert. Du wirst weitergeleitet …', true); setTimeout(goApp, 900); })
+      .catch(function (er) { msg(f, lincomError(er)); busy(f, false); });
+  });
+})();
+</script>
 </body>
 </html>
